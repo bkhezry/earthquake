@@ -9,6 +9,7 @@ import butterknife.BindView
 import butterknife.ButterKnife
 import com.github.bkhezry.earthquake.R
 import com.github.bkhezry.earthquake.model.EarthquakeHourResponse
+import com.github.bkhezry.earthquake.model.Feature
 import com.github.bkhezry.earthquake.service.ApiService
 import com.github.bkhezry.earthquake.util.ApiClient
 import com.github.bkhezry.earthquake.util.AppUtil
@@ -17,10 +18,11 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MapStyleOptions
-import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.maps.android.clustering.ClusterManager
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -37,6 +39,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var grayScaleStyle: MapStyleOptions
     private lateinit var apiService: ApiService
     private val disposable = CompositeDisposable()
+    private lateinit var mClusterManager: ClusterManager<Feature>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -73,8 +76,9 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         )
         // Add a marker in Sydney and move the camera
         val tehran = LatLng(35.6892, 51.3890)
-        mMap.addMarker(MarkerOptions().position(tehran).title("Marker in Tehran"))
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(tehran, 9f))
+        mClusterManager = ClusterManager(this, mMap)
+        mMap.setOnCameraIdleListener(mClusterManager)
         getHourlyEarthquake()
     }
 
@@ -88,7 +92,18 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun handleHourlyResponse(earthquakeHourResponse: EarthquakeHourResponse) {
-        Log.d("response:", earthquakeHourResponse.features.size.toString())
+        val builder = LatLngBounds.builder()
+        var count = 0
+        for (item in earthquakeHourResponse.features) {
+            mClusterManager.addItem(item)
+            builder.include(item.position)
+            count++
+        }
+        if (count > 1) {
+            val bounds: LatLngBounds = builder.build()
+            mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100))
+        }
+
     }
 
     private fun handleHourlyError(error: Throwable) {
