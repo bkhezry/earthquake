@@ -10,26 +10,22 @@ import java.util.concurrent.TimeUnit
 
 class ApiClient {
     companion object {
-        private var retrofit: Retrofit? = null
+        private lateinit var retrofit: Retrofit
         private const val REQUEST_TIMEOUT = 10
-        private var okHttpClient: OkHttpClient? = null
+        private lateinit var okHttpClient: OkHttpClient
+
         fun getClient(): Retrofit? {
-
-            if (okHttpClient == null)
-                initOkHttp()
-
-            if (retrofit == null) {
-                retrofit = Retrofit.Builder()
-                    .baseUrl(Constants.BASE_URL)
-                    .client(okHttpClient)
-                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build()
-            }
+            initOkHttp()
+            retrofit = Retrofit.Builder()
+                .baseUrl(Constants.BASE_URL)
+                .client(okHttpClient)
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
             return retrofit
         }
 
-        fun initOkHttp() {
+        private fun initOkHttp() {
             val interceptor = HttpLoggingInterceptor()
             interceptor.level = HttpLoggingInterceptor.Level.BODY
 
