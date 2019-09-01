@@ -11,6 +11,7 @@ import com.github.bkhezry.earthquake.R
 import com.github.bkhezry.earthquake.model.EarthquakeHourResponse
 import com.github.bkhezry.earthquake.service.ApiService
 import com.github.bkhezry.earthquake.util.ApiClient
+import com.github.bkhezry.earthquake.util.AppUtil
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -60,11 +61,16 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
-
+        mMap.setPadding(
+            0,
+            AppUtil.getActionBarHeight(this) + AppUtil.dpToPx(30, resources),
+            0,
+            AppUtil.getActionBarHeight(this) + 5
+        )
         // Add a marker in Sydney and move the camera
-        val sydney = LatLng(-34.0, 151.0)
-        mMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+        val tehran = LatLng(35.6892, 51.3890)
+        mMap.addMarker(MarkerOptions().position(tehran).title("Marker in Tehran"))
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(tehran, 9f))
         getHourlyEarthquake()
     }
 
