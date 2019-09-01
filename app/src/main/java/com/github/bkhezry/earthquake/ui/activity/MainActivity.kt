@@ -68,6 +68,22 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
+        setupMapSettings(googleMap)
+        setupClusterManager()
+        getHourlyEarthquake()
+    }
+
+    private fun setupClusterManager() {
+        mClusterManager = ClusterManager(this, mMap)
+        mMap.setOnCameraIdleListener(mClusterManager)
+        mMap.setOnMarkerClickListener(mClusterManager)
+        mClusterManager.setOnClusterItemClickListener { feature ->
+            handleClusterItemClick(feature)
+        }
+        mClusterManager.setOnClusterClickListener { cluster -> handleClusterClick(cluster) }
+    }
+
+    private fun setupMapSettings(googleMap: GoogleMap) {
         mMap = googleMap
         mMap.setMapStyle(grayScaleStyle)
         mMap.setPadding(
@@ -79,28 +95,16 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         // Add a marker in Sydney and move the camera
         val tehran = LatLng(35.6892, 51.3890)
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(tehran, 9f))
-        mClusterManager = ClusterManager(this, mMap)
-        mMap.setOnCameraIdleListener(mClusterManager)
-        mMap.setOnMarkerClickListener(mClusterManager)
-        mClusterManager.setOnClusterItemClickListener { feature ->
-            handleClusterItemClick(feature)
-        }
-        mClusterManager.setOnClusterClickListener { cluster -> handleClusterClick(cluster) }
-        getHourlyEarthquake()
+        mMap.uiSettings.isMyLocationButtonEnabled = false
+        mMap.uiSettings.isRotateGesturesEnabled = false
     }
 
     private fun handleClusterClick(cluster: Cluster<Feature>): Boolean {
-        val builder = LatLngBounds.builder()
-        var count = 0
+        val features = arrayListOf<Feature>()
         for (item in cluster.items) {
-            mClusterManager.addItem(item)
-            builder.include(item.position)
-            count++
+            features.add(item)
         }
-        if (count > 1) {
-            val bounds: LatLngBounds = builder.build()
-            mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100))
-        }
+        boundbox(features)
         return true
     }
 
@@ -119,9 +123,14 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun handleHourlyResponse(earthquakeHourResponse: EarthquakeHourResponse) {
+        val features = earthquakeHourResponse.features
+        boundbox(features)
+    }
+
+    private fun boundbox(features: List<Feature>) {
         val builder = LatLngBounds.builder()
         var count = 0
-        for (item in earthquakeHourResponse.features) {
+        for (item in features) {
             mClusterManager.addItem(item)
             builder.include(item.position)
             count++
@@ -130,7 +139,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             val bounds: LatLngBounds = builder.build()
             mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100))
         }
-
     }
 
     private fun handleHourlyError(error: Throwable) {
