@@ -3,6 +3,7 @@ package com.github.bkhezry.earthquake.ui.activity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import butterknife.BindView
@@ -79,7 +80,16 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(tehran, 9f))
         mClusterManager = ClusterManager(this, mMap)
         mMap.setOnCameraIdleListener(mClusterManager)
+        mMap.setOnMarkerClickListener(mClusterManager)
+        mClusterManager.setOnClusterItemClickListener { feature ->
+            handleClusterItemClick(feature)
+        }
         getHourlyEarthquake()
+    }
+
+    private fun handleClusterItemClick(feature: Feature): Boolean {
+        Toast.makeText(this, feature.properties.title, Toast.LENGTH_LONG).show()
+        return true
     }
 
     private fun getHourlyEarthquake() {
