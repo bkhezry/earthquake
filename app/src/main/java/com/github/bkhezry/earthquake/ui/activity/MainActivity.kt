@@ -23,6 +23,7 @@ import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.maps.android.clustering.Cluster
 import com.google.maps.android.clustering.ClusterManager
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -84,7 +85,23 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         mClusterManager.setOnClusterItemClickListener { feature ->
             handleClusterItemClick(feature)
         }
+        mClusterManager.setOnClusterClickListener { cluster -> handleClusterClick(cluster) }
         getHourlyEarthquake()
+    }
+
+    private fun handleClusterClick(cluster: Cluster<Feature>): Boolean {
+        val builder = LatLngBounds.builder()
+        var count = 0
+        for (item in cluster.items) {
+            mClusterManager.addItem(item)
+            builder.include(item.position)
+            count++
+        }
+        if (count > 1) {
+            val bounds: LatLngBounds = builder.build()
+            mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100))
+        }
+        return true
     }
 
     private fun handleClusterItemClick(feature: Feature): Boolean {
