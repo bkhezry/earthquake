@@ -17,6 +17,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -33,6 +34,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     lateinit var coordinatorLayout: CoordinatorLayout
     private lateinit var bottomDrawerBehavior: BottomSheetBehavior<View>
     private lateinit var mMap: GoogleMap
+    private lateinit var grayScaleStyle: MapStyleOptions
     private lateinit var apiService: ApiService
     private val disposable = CompositeDisposable()
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,6 +45,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
+        grayScaleStyle = MapStyleOptions.loadRawResourceStyle(this, R.raw.mapstyle_grayscale)
         mapFragment.getMapAsync(this)
         setupBottomDrawer()
         apiService = ApiClient.getClient()!!.create(ApiService::class.java)
@@ -61,6 +64,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
+        mMap.setMapStyle(grayScaleStyle)
         mMap.setPadding(
             0,
             AppUtil.getActionBarHeight(this) + AppUtil.dpToPx(30, resources),
