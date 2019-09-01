@@ -12,6 +12,20 @@
 
         <include layout="@layout/content_main" />
 
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/bound_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="61dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:tint="@android:color/black"
+            app:backgroundTint="@android:color/white"
+            app:elevation="5dp"
+            app:fabSize="normal"
+            app:srcCompat="@drawable/ic_crop_free_black_24dp" />
 
         <com.google.android.material.bottomappbar.BottomAppBar
             android:id="@+id/bar"

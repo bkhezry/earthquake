@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import butterknife.BindView
 import butterknife.ButterKnife
+import butterknife.OnClick
 import com.github.bkhezry.earthquake.R
 import com.github.bkhezry.earthquake.model.EarthquakeHourResponse
 import com.github.bkhezry.earthquake.model.Feature
@@ -23,6 +24,7 @@ import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.maps.android.clustering.Cluster
 import com.google.maps.android.clustering.ClusterManager
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -36,12 +38,15 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     lateinit var bar: BottomAppBar
     @BindView(R.id.coordinator_layout)
     lateinit var coordinatorLayout: CoordinatorLayout
+    @BindView(R.id.bound_fab)
+    lateinit var boundFab: FloatingActionButton
     private lateinit var bottomDrawerBehavior: BottomSheetBehavior<View>
     private lateinit var mMap: GoogleMap
     private lateinit var grayScaleStyle: MapStyleOptions
     private lateinit var apiService: ApiService
     private val disposable = CompositeDisposable()
     private lateinit var mClusterManager: ClusterManager<Feature>
+    private lateinit var mEarthquakeHourResponse: EarthquakeHourResponse
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -123,15 +128,15 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun handleHourlyResponse(earthquakeHourResponse: EarthquakeHourResponse) {
-        val features = earthquakeHourResponse.features
-        boundbox(features)
+        mEarthquakeHourResponse = earthquakeHourResponse
+        mClusterManager.addItems(earthquakeHourResponse.features)
+        boundbox(earthquakeHourResponse.features)
     }
 
     private fun boundbox(features: List<Feature>) {
         val builder = LatLngBounds.builder()
         var count = 0
         for (item in features) {
-            mClusterManager.addItem(item)
             builder.include(item.position)
             count++
         }
@@ -144,6 +149,11 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun handleHourlyError(error: Throwable) {
         Log.d("message:", error.localizedMessage)
 
+    }
+
+    @OnClick(R.id.bound_fab)
+    fun bound() {
+        boundbox(mEarthquakeHourResponse.features)
     }
 
     override fun onDestroy() {
