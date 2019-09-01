@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/all_earthquake_item"
+        android:title="All Earthquake" />
+    <item
+        android:id="@+id/settings_item"
+        android:title="Settings" />
+
+</menu>

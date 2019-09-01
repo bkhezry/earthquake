@@ -21,6 +21,25 @@
             app:backgroundTint="?attr/colorPrimary"
             app:navigationIcon="@drawable/ic_menu_black_24dp" />
 
+        <FrameLayout
+            android:id="@+id/bottom_drawer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:elevation="16dp"
+            app:behavior_hideable="true"
+            app:layout_behavior="@string/bottom_sheet_behavior">
+
+            <com.google.android.material.navigation.NavigationView
+                android:id="@+id/navigation_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/colorPrimary"
+                app:itemIconTint="@android:color/black"
+                app:itemTextColor="@android:color/black"
+                app:menu="@menu/navigation" />
+        </FrameLayout>
+
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
