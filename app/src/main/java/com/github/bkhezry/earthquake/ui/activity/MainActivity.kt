@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.OnClick
@@ -28,6 +30,8 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.maps.android.clustering.Cluster
 import com.google.maps.android.clustering.ClusterManager
+import com.mikepenz.fastadapter.FastAdapter
+import com.mikepenz.fastadapter.adapters.ItemAdapter
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -41,6 +45,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     lateinit var coordinatorLayout: CoordinatorLayout
     @BindView(R.id.bound_fab)
     lateinit var boundFab: FloatingActionButton
+    @BindView(R.id.recycler_view)
+    lateinit var recyclerView: RecyclerView
     private lateinit var bottomDrawerBehavior: BottomSheetBehavior<View>
     private lateinit var mMap: GoogleMap
     private lateinit var grayScaleStyle: MapStyleOptions
@@ -48,6 +54,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     private val disposable = CompositeDisposable()
     private lateinit var mClusterManager: ClusterManager<Feature>
     private lateinit var mEarthquakeHourResponse: EarthquakeHourResponse
+    private val itemAdapter = ItemAdapter<Feature>()
+    private lateinit var fastAdapter: FastAdapter<Feature>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -56,7 +64,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         val params: (ViewGroup.MarginLayoutParams) =
             boundFab.getLayoutParams() as ViewGroup.MarginLayoutParams
         params.bottomMargin =
-            AppUtil.getActionBarHeight(this) + AppUtil.dpToPx(5, resources)
+            AppUtil.getActionBarHeight(this) + AppUtil.dpToPx(116, resources)
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
@@ -64,7 +72,10 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         mapFragment.getMapAsync(this)
         setupBottomDrawer()
         apiService = ApiClient.getClient()!!.create(ApiService::class.java)
-
+        fastAdapter = FastAdapter.with(itemAdapter)
+        var layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        recyclerView.layoutManager = layoutManager
+        recyclerView.adapter = fastAdapter
     }
 
     private fun setupBottomDrawer() {
@@ -99,9 +110,9 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap.setMapStyle(grayScaleStyle)
         mMap.setPadding(
             0,
-            AppUtil.getActionBarHeight(this) + AppUtil.dpToPx(30, resources),
             0,
-            AppUtil.getActionBarHeight(this) + 5
+            0,
+            AppUtil.getActionBarHeight(this) + AppUtil.dpToPx(116, resources)
         )
         // Add a marker in Sydney and move the camera
         val tehran = LatLng(35.6892, 51.3890)
@@ -137,6 +148,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         mEarthquakeHourResponse = earthquakeHourResponse
         mClusterManager.addItems(earthquakeHourResponse.features)
         boundbox(earthquakeHourResponse.features)
+        itemAdapter.clear()
+        itemAdapter.add(earthquakeHourResponse.features)
     }
 
     private fun boundbox(features: List<Feature>) {
