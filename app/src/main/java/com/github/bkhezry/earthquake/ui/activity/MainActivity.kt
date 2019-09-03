@@ -18,6 +18,8 @@ import com.github.bkhezry.earthquake.model.Feature
 import com.github.bkhezry.earthquake.service.ApiService
 import com.github.bkhezry.earthquake.util.ApiClient
 import com.github.bkhezry.earthquake.util.AppUtil
+import com.github.bkhezry.earthquake.util.LinearEdgeDecoration
+import com.github.rubensousa.gravitysnaphelper.GravitySnapRecyclerView
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -46,7 +48,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     @BindView(R.id.bound_fab)
     lateinit var boundFab: FloatingActionButton
     @BindView(R.id.recycler_view)
-    lateinit var recyclerView: RecyclerView
+    lateinit var recyclerView: GravitySnapRecyclerView
     private lateinit var bottomDrawerBehavior: BottomSheetBehavior<View>
     private lateinit var mMap: GoogleMap
     private lateinit var grayScaleStyle: MapStyleOptions
@@ -75,6 +77,13 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         fastAdapter = FastAdapter.with(itemAdapter)
         var layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         recyclerView.layoutManager = layoutManager
+        recyclerView.addItemDecoration(
+            LinearEdgeDecoration(
+                startPadding = recyclerView.resources.getDimensionPixelOffset(R.dimen.extra_padding),
+                endPadding = 0,
+                orientation = RecyclerView.HORIZONTAL
+            )
+        )
         recyclerView.adapter = fastAdapter
     }
 

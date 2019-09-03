@@ -66,6 +66,8 @@ dependencies {
 
     implementation 'com.google.maps.android:android-maps-utils:0.5'
     implementation 'com.mikepenz:fastadapter:4.1.0-b02'
+    implementation 'com.github.rubensousa:gravitysnaphelper:2.2.0'
+
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'

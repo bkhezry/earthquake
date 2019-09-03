@@ -1,0 +1,4 @@
+<resources>
+
+    <dimen name="extra_padding">100dp</dimen>
+</resources>

@@ -12,12 +12,14 @@
         android:layout_height="match_parent"
         tools:context=".ui.activity.MainActivity" />
 
-    <androidx.recyclerview.widget.RecyclerView
+    <com.github.rubensousa.gravitysnaphelper.GravitySnapRecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="150dp"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="16dp"
         android:orientation="horizontal"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:snapGravity="center"
+        app:snapToPadding="false" />
 </RelativeLayout>
