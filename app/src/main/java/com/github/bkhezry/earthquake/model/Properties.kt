@@ -49,7 +49,7 @@ data class Properties(
     @SerializedName("rms")
     val rms: Double,
     @SerializedName("gap")
-    val gap: Int,
+    val gap: Double,
     @SerializedName("magType")
     val magType: String,
     @SerializedName("type")
