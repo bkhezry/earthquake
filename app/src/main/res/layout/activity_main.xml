@@ -24,7 +24,7 @@
             android:tint="@android:color/black"
             app:backgroundTint="@android:color/white"
             app:elevation="5dp"
-            app:fabSize="normal"
+            app:fabSize="mini"
             app:srcCompat="@drawable/ic_crop_free_black_24dp" />
 
         <com.google.android.material.bottomappbar.BottomAppBar
