@@ -19,6 +19,7 @@ import com.github.bkhezry.earthquake.model.Feature
 import com.github.bkhezry.earthquake.service.ApiService
 import com.github.bkhezry.earthquake.util.ApiClient
 import com.github.bkhezry.earthquake.util.AppUtil
+import com.github.bkhezry.earthquake.util.CustomRenderer
 import com.github.bkhezry.earthquake.util.LinearEdgeDecoration
 import com.github.rubensousa.gravitysnaphelper.GravitySnapRecyclerView
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -60,6 +61,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var mEarthquakeHourResponse: EarthquakeHourResponse
     private val itemAdapter = ItemAdapter<Feature>()
     private lateinit var fastAdapter: FastAdapter<Feature>
+    private lateinit var customRenderer: CustomRenderer
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -68,7 +70,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         val params: (ViewGroup.MarginLayoutParams) =
             boundFab.layoutParams as ViewGroup.MarginLayoutParams
         params.bottomMargin =
-            AppUtil.getActionBarHeight(this) + AppUtil.dpToPx(130, resources)
+            AppUtil.getActionBarHeight(this) + AppUtil.dpToPx(130f)
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
@@ -126,6 +128,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             handleClusterItemClick(feature)
         }
         mClusterManager.setOnClusterClickListener { cluster -> handleClusterClick(cluster) }
+        customRenderer = CustomRenderer(this@MainActivity, mMap, mClusterManager)
+        mClusterManager.renderer = customRenderer
     }
 
     private fun setupMapSettings(googleMap: GoogleMap) {
@@ -135,7 +139,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             0,
             0,
             0,
-            AppUtil.getActionBarHeight(this) + AppUtil.dpToPx(130, resources)
+            AppUtil.getActionBarHeight(this) + AppUtil.dpToPx(130f)
         )
         // Add a marker in Sydney and move the camera
         val tehran = LatLng(35.6892, 51.3890)
