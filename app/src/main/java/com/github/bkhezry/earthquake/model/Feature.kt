@@ -68,7 +68,7 @@ data class Feature(
             if (item.isSelected) {
                 val color: Int = Color.argb(255, 255, 255, 51)
                 view.strokeColor = color
-                view.strokeWidth = AppUtil.dpToPx(1, view.resources)
+                view.strokeWidth = AppUtil.dpToPx(1f)
                 view.foreground = FastAdapterUIUtils.getSelectablePressedBackground(
                     view.context,
                     FastAdapterUIUtils.adjustAlpha(color, 20),
@@ -91,7 +91,7 @@ data class Feature(
             mag.text = null
             date.text = null
             view.strokeColor = Color.WHITE
-            view.strokeWidth = AppUtil.dpToPx(0, view.resources)
+            view.strokeWidth = AppUtil.dpToPx(0f)
         }
     }
 
