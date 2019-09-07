@@ -35,6 +35,21 @@
             app:backgroundTint="?attr/colorPrimary"
             app:navigationIcon="@drawable/ic_menu_black_24dp" />
 
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/next_days_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Filter"
+            android:textAllCaps="false"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"
+            app:backgroundTint="@color/colorPrimary"
+            app:icon="@drawable/ic_tune_black_24dp"
+            app:iconTint="@android:color/black"
+            app:layout_anchor="@id/bar" />
+
         <FrameLayout
             android:id="@+id/bottom_drawer"
             android:layout_width="match_parent"

@@ -3,6 +3,7 @@
     <dimen name="spacing_middle">10dp</dimen>
     <dimen name="spacing_large">15dp</dimen>
     <dimen name="spacing_mlarge">20dp</dimen>
+    <dimen name="spacing_mmlarge">24dp</dimen>
     <dimen name="spacing_xlarge">35dp</dimen>
     <dimen name="spacing_xxlarge">50dp</dimen>
     <dimen name="spacing_xxxlarge">60dp</dimen>

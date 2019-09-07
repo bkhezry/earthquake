@@ -72,7 +72,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         val params: (ViewGroup.MarginLayoutParams) =
             boundFab.layoutParams as ViewGroup.MarginLayoutParams
         params.bottomMargin =
-            AppUtil.getActionBarHeight(this) + AppUtil.dpToPx(130f)
+            AppUtil.getActionBarHeight(this) + AppUtil.dpToPx(135f)
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
@@ -157,12 +157,12 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                             0,
                             0,
                             0,
-                            AppUtil.getActionBarHeight(this@MainActivity) + AppUtil.dpToPx(5f)
+                            AppUtil.getActionBarHeight(this@MainActivity) + AppUtil.dpToPx(20f)
                         )
                         val params: (ViewGroup.MarginLayoutParams) =
                             boundFab.layoutParams as ViewGroup.MarginLayoutParams
                         params.bottomMargin =
-                            AppUtil.getActionBarHeight(this@MainActivity) + AppUtil.dpToPx(5f)
+                            AppUtil.getActionBarHeight(this@MainActivity) + AppUtil.dpToPx(20f)
                         recyclerView.clearAnimation()
                         recyclerView.visibility = View.GONE
                     }
@@ -192,7 +192,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                         val params: (ViewGroup.MarginLayoutParams) =
                             boundFab.layoutParams as ViewGroup.MarginLayoutParams
                         params.bottomMargin =
-                            AppUtil.getActionBarHeight(this@MainActivity) + AppUtil.dpToPx(130f)
+                            AppUtil.getActionBarHeight(this@MainActivity) + AppUtil.dpToPx(135f)
                         recyclerView.clearAnimation()
                         recyclerView.visibility = View.VISIBLE
                     }
