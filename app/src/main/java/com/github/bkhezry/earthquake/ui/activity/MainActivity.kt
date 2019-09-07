@@ -13,6 +13,7 @@ import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.OnClick
 import com.github.bkhezry.earthquake.R
+import com.github.bkhezry.earthquake.listener.CardClickListener
 import com.github.bkhezry.earthquake.model.EarthquakeHourResponse
 import com.github.bkhezry.earthquake.model.Feature
 import com.github.bkhezry.earthquake.service.ApiService
@@ -34,6 +35,7 @@ import com.google.maps.android.clustering.Cluster
 import com.google.maps.android.clustering.ClusterManager
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
+import com.mikepenz.fastadapter.select.getSelectExtension
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -64,9 +66,9 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         ButterKnife.bind(this)
         setSupportActionBar(bar)
         val params: (ViewGroup.MarginLayoutParams) =
-            boundFab.getLayoutParams() as ViewGroup.MarginLayoutParams
+            boundFab.layoutParams as ViewGroup.MarginLayoutParams
         params.bottomMargin =
-            AppUtil.getActionBarHeight(this) + AppUtil.dpToPx(116, resources)
+            AppUtil.getActionBarHeight(this) + AppUtil.dpToPx(130, resources)
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
@@ -75,7 +77,12 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         setupBottomDrawer()
         apiService = ApiClient.getClient()!!.create(ApiService::class.java)
         fastAdapter = FastAdapter.with(itemAdapter)
-        var layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        fastAdapter.getSelectExtension().apply {
+            isSelectable = true
+            multiSelect = false
+            selectOnLongClick = false
+        }
+        val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         recyclerView.layoutManager = layoutManager
         recyclerView.addItemDecoration(
             LinearEdgeDecoration(
@@ -85,6 +92,13 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             )
         )
         recyclerView.adapter = fastAdapter
+        fastAdapter.addEventHook(Feature.MaterialCardClickEvent(object : CardClickListener {
+            override fun selected(feature: Feature, position: Int) {
+                recyclerView.smoothScrollToPosition(position)
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(feature.position, 9f))
+            }
+        }))
+        fastAdapter.addEventHook(Feature.InfoFabClickEvent())
     }
 
     private fun setupBottomDrawer() {
@@ -121,7 +135,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             0,
             0,
             0,
-            AppUtil.getActionBarHeight(this) + AppUtil.dpToPx(116, resources)
+            AppUtil.getActionBarHeight(this) + AppUtil.dpToPx(130, resources)
         )
         // Add a marker in Sydney and move the camera
         val tehran = LatLng(35.6892, 51.3890)
@@ -135,7 +149,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         for (item in cluster.items) {
             features.add(item)
         }
-        boundbox(features)
+        boundBox(features)
         return true
     }
 
@@ -156,12 +170,17 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun handleHourlyResponse(earthquakeHourResponse: EarthquakeHourResponse) {
         mEarthquakeHourResponse = earthquakeHourResponse
         mClusterManager.addItems(earthquakeHourResponse.features)
-        boundbox(earthquakeHourResponse.features)
+        boundBox(earthquakeHourResponse.features)
         itemAdapter.clear()
-        itemAdapter.add(earthquakeHourResponse.features)
+        for (item in earthquakeHourResponse.features) {
+            item.isSelectable = true
+            val feature = Feature(item.typeString, item.properties, item.geometry, item.id)
+            itemAdapter.add(feature)
+        }
+
     }
 
-    private fun boundbox(features: List<Feature>) {
+    private fun boundBox(features: List<Feature>) {
         val builder = LatLngBounds.builder()
         var count = 0
         for (item in features) {
@@ -181,7 +200,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
     @OnClick(R.id.bound_fab)
     fun bound() {
-        boundbox(mEarthquakeHourResponse.features)
+        boundBox(mEarthquakeHourResponse.features)
     }
 
     override fun onDestroy() {
