@@ -50,22 +50,20 @@ class AppUtil {
             markerEarthquake.text = mag
             markerLine.setBackgroundColor(Color.BLACK)
             markerEnd.setImageResource(R.drawable.ic_action_end_marker)
-            bitmap = createBitmapFromView(heroMarkerView, 90, 70)
+            bitmap = createBitmapFromView(heroMarkerView)
             return BitmapDescriptorFactory.fromBitmap(bitmap)
         }
 
-        private fun createBitmapFromView(view: View, width: Int, height: Int): Bitmap {
-            if (width > 0 && height > 0) {
-                view.measure(
-                    View.MeasureSpec.makeMeasureSpec(
-                        dpToPx(width.toFloat()), View.MeasureSpec.EXACTLY
-                    ),
-                    View.MeasureSpec.makeMeasureSpec(
+        private fun createBitmapFromView(view: View): Bitmap {
+            view.measure(
+                View.MeasureSpec.makeMeasureSpec(
+                    dpToPx(90f), View.MeasureSpec.EXACTLY
+                ),
+                View.MeasureSpec.makeMeasureSpec(
 
-                        dpToPx(height.toFloat()), View.MeasureSpec.EXACTLY
-                    )
+                    dpToPx(70f), View.MeasureSpec.EXACTLY
                 )
-            }
+            )
             view.layout(0, 0, view.measuredWidth, view.measuredHeight)
             view.isDrawingCacheEnabled = true
             view.buildDrawingCache(true)

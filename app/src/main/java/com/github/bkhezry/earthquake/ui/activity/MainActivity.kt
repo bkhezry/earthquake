@@ -1,5 +1,6 @@
 package com.github.bkhezry.earthquake.ui.activity
 
+import android.animation.Animator
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -37,6 +38,7 @@ import com.google.maps.android.clustering.ClusterManager
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.mikepenz.fastadapter.select.getSelectExtension
+import com.mikepenz.itemanimators.AlphaInAnimator
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -93,6 +95,12 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                 orientation = RecyclerView.HORIZONTAL
             )
         )
+        recyclerView.itemAnimator = AlphaInAnimator()
+        recyclerView.itemAnimator?.apply {
+            addDuration = 500
+            removeDuration = 500
+        }
+
         recyclerView.adapter = fastAdapter
         fastAdapter.addEventHook(Feature.MaterialCardClickEvent(object : CardClickListener {
             override fun selected(feature: Feature, position: Int) {
@@ -115,9 +123,86 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
-        setupMapSettings(googleMap)
+        mMap = googleMap
+        setupMapSettings()
         setupClusterManager()
         getHourlyEarthquake()
+        mMap.setOnMapClickListener {
+            toggleRecyclerViewVisibility()
+        }
+
+    }
+
+    private fun toggleRecyclerViewVisibility() {
+        if (recyclerView.visibility == View.VISIBLE) {
+            recyclerView.animate()
+                .translationY(recyclerView.height.toFloat())
+                .alpha(0.0f)
+                .setDuration(200)
+                .setListener(object : Animator.AnimatorListener {
+                    override fun onAnimationRepeat(animator: Animator?) {
+
+                    }
+
+                    override fun onAnimationCancel(animator: Animator?) {
+
+                    }
+
+                    override fun onAnimationStart(animator: Animator?) {
+
+                    }
+
+                    override fun onAnimationEnd(animator: Animator?) {
+                        mMap.setPadding(
+                            0,
+                            0,
+                            0,
+                            AppUtil.getActionBarHeight(this@MainActivity) + AppUtil.dpToPx(5f)
+                        )
+                        val params: (ViewGroup.MarginLayoutParams) =
+                            boundFab.layoutParams as ViewGroup.MarginLayoutParams
+                        params.bottomMargin =
+                            AppUtil.getActionBarHeight(this@MainActivity) + AppUtil.dpToPx(5f)
+                        recyclerView.clearAnimation()
+                        recyclerView.visibility = View.GONE
+                    }
+
+                })
+        } else {
+            recyclerView.animate()
+                .translationY(0f)
+                .alpha(1.0f)
+                .setDuration(200)
+                .setListener(object : Animator.AnimatorListener {
+                    override fun onAnimationRepeat(animator: Animator?) {
+
+                    }
+
+                    override fun onAnimationCancel(animator: Animator?) {
+
+                    }
+
+                    override fun onAnimationStart(animator: Animator?) {
+                        mMap.setPadding(
+                            0,
+                            0,
+                            0,
+                            AppUtil.getActionBarHeight(this@MainActivity) + AppUtil.dpToPx(130f)
+                        )
+                        val params: (ViewGroup.MarginLayoutParams) =
+                            boundFab.layoutParams as ViewGroup.MarginLayoutParams
+                        params.bottomMargin =
+                            AppUtil.getActionBarHeight(this@MainActivity) + AppUtil.dpToPx(130f)
+                        recyclerView.clearAnimation()
+                        recyclerView.visibility = View.VISIBLE
+                    }
+
+                    override fun onAnimationEnd(animator: Animator?) {
+
+                    }
+
+                })
+        }
     }
 
     private fun setupClusterManager() {
@@ -132,8 +217,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         mClusterManager.renderer = customRenderer
     }
 
-    private fun setupMapSettings(googleMap: GoogleMap) {
-        mMap = googleMap
+    private fun setupMapSettings() {
         mMap.setMapStyle(grayScaleStyle)
         mMap.setPadding(
             0,
