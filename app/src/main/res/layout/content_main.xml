@@ -15,11 +15,11 @@
     <com.github.rubensousa.gravitysnaphelper.GravitySnapRecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="160dp"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="16dp"
         android:orientation="horizontal"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        app:snapGravity="center"
+        app:snapGravity="start"
         app:snapToPadding="false" />
 </RelativeLayout>
