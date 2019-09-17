@@ -1,13 +1,15 @@
 package com.github.bkhezry.earthquake.ui.activity
 
 import android.animation.Animator
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.app.ActivityOptionsCompat
+import androidx.core.util.Pair
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import butterknife.BindView
@@ -18,10 +20,7 @@ import com.github.bkhezry.earthquake.listener.CardClickListener
 import com.github.bkhezry.earthquake.model.EarthquakeHourResponse
 import com.github.bkhezry.earthquake.model.Feature
 import com.github.bkhezry.earthquake.service.ApiService
-import com.github.bkhezry.earthquake.util.ApiClient
-import com.github.bkhezry.earthquake.util.AppUtil
-import com.github.bkhezry.earthquake.util.CustomRenderer
-import com.github.bkhezry.earthquake.util.LinearEdgeDecoration
+import com.github.bkhezry.earthquake.util.*
 import com.github.rubensousa.gravitysnaphelper.GravitySnapRecyclerView
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -36,6 +35,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.maps.android.clustering.Cluster
 import com.google.maps.android.clustering.ClusterManager
 import com.mikepenz.fastadapter.FastAdapter
+import com.mikepenz.fastadapter.IAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.mikepenz.fastadapter.select.getSelectExtension
 import com.mikepenz.itemanimators.AlphaInAnimator
@@ -82,7 +82,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         apiService = ApiClient.getClient()!!.create(ApiService::class.java)
         fastAdapter = FastAdapter.with(itemAdapter)
         fastAdapter.getSelectExtension().apply {
-            isSelectable = true
+            isSelectable = false
             multiSelect = false
             selectOnLongClick = false
         }
@@ -102,13 +102,27 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         }
 
         recyclerView.adapter = fastAdapter
-        fastAdapter.addEventHook(Feature.MaterialCardClickEvent(object : CardClickListener {
+        fastAdapter.addEventHook(Feature.InfoFabClickEvent(object : CardClickListener {
             override fun selected(feature: Feature, position: Int) {
                 recyclerView.smoothScrollToPosition(position)
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(feature.position, 9f))
             }
         }))
-        fastAdapter.addEventHook(Feature.InfoFabClickEvent())
+        fastAdapter.onClickListener =
+            { v: View?, _: IAdapter<Feature>, item: Feature, _: Int ->
+                v?.let {
+                    val intent = Intent(this@MainActivity, EarthquakeDetailActivity::class.java)
+                    intent.putExtra(Constants.EXTRA_ITEM, item)
+                    val p1 = Pair.create<View, String>(v.findViewById(R.id.card_view), "card_view")
+                    val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                        this@MainActivity,
+                        p1
+                    )
+                    startActivity(intent, options.toBundle())
+                }
+                true
+            }
+
     }
 
     private fun setupBottomDrawer() {
@@ -242,7 +256,9 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun handleClusterItemClick(feature: Feature): Boolean {
-        Toast.makeText(this, feature.properties.title, Toast.LENGTH_LONG).show()
+        val intent = Intent(this@MainActivity, EarthquakeDetailActivity::class.java)
+        intent.putExtra(Constants.EXTRA_ITEM, feature)
+        startActivity(intent)
         return true
     }
 
