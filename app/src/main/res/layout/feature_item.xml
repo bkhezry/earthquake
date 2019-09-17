@@ -2,9 +2,11 @@
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/card_view"
     android:layout_width="200dp"
     android:layout_height="100dp"
     android:layout_marginEnd="16dp"
+    android:transitionName="card_view"
     app:cardBackgroundColor="?attr/colorPrimary"
     app:cardCornerRadius="6dp"
     app:cardElevation="6dp">
@@ -54,6 +56,19 @@
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
+            <ImageButton
+                android:id="@+id/info_button"
+                style="@style/TextAppearance.MaterialComponents.Button"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_gravity="end"
+                android:background="?selectableItemBackgroundBorderless"
+                app:srcCompat="@drawable/ic_launch_black_24dp" />
+
+            <View
+                android:layout_width="@dimen/spacing_medium"
+                android:layout_height="0dp" />
+
             <TextView
                 android:id="@+id/title_text_view"
                 android:layout_width="0dp"
@@ -63,18 +78,7 @@
                 android:textColor="@android:color/black"
                 tools:text="Title" />
 
-            <View
-                android:layout_width="@dimen/spacing_medium"
-                android:layout_height="0dp" />
 
-            <ImageButton
-                android:id="@+id/info_button"
-                style="@style/TextAppearance.MaterialComponents.Button"
-                android:layout_width="46dp"
-                android:layout_height="46dp"
-                android:layout_gravity="end"
-                android:background="?selectableItemBackgroundBorderless"
-                app:srcCompat="@drawable/ic_launch_black_24dp" />
         </LinearLayout>
 
     </LinearLayout>
