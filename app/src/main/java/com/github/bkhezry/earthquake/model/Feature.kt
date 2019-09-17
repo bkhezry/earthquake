@@ -2,7 +2,7 @@ package com.github.bkhezry.earthquake.model
 
 
 import android.graphics.Color
-import android.util.Log
+import android.os.Parcelable
 import android.view.View
 import android.widget.ImageButton
 import android.widget.TextView
@@ -19,10 +19,11 @@ import com.mikepenz.fastadapter.items.AbstractItem
 import com.mikepenz.fastadapter.listeners.ClickEventHook
 import com.mikepenz.fastadapter.select.SelectExtension
 import com.mikepenz.fastadapter.ui.utils.FastAdapterUIUtils
+import kotlinx.android.parcel.Parcelize
 import java.text.SimpleDateFormat
 import java.util.*
 
-
+@Parcelize
 data class Feature(
     @SerializedName("type")
     val typeString: String,
@@ -32,7 +33,7 @@ data class Feature(
     val geometry: Geometry,
     @SerializedName("id")
     val id: String
-) : ClusterItem, AbstractItem<Feature.ViewHolder>() {
+) : ClusterItem, AbstractItem<Feature.ViewHolder>(), Parcelable {
     override fun getViewHolder(v: View): ViewHolder {
         return ViewHolder(v)
     }
@@ -81,7 +82,13 @@ data class Feature(
             val format = SimpleDateFormat("E, MMMM d, yyyy 'at' h:mm", Locale.getDefault())
             val stringArray = item.properties.title.split("-")
             title.text = stringArray[1].trim()
-            mag.text = stringArray[0].trim()
+            mag.text = view.context.getString(R.string.mag_label)
+                .plus(
+                    String.format(
+                        "%.1f",
+                        item.properties.mag
+                    )
+                )
             date.text = format.format(calendar.time)
 
         }
@@ -95,11 +102,11 @@ data class Feature(
         }
     }
 
-    class MaterialCardClickEvent(cardClickListener: CardClickListener) : ClickEventHook<Feature>() {
+    class InfoFabClickEvent(cardClickListener: CardClickListener) : ClickEventHook<Feature>() {
         private var listener: CardClickListener = cardClickListener
         override fun onBind(viewHolder: RecyclerView.ViewHolder): View? {
             return if (viewHolder is ViewHolder) {
-                viewHolder.view
+                viewHolder.infoButton
             } else null
         }
 
@@ -122,24 +129,8 @@ data class Feature(
                 fastAdapter.notifyAdapterItemChanged(position)
 
             }
+            AppUtil.vibrate()
             listener.selected(item, position)
-        }
-    }
-
-    class InfoFabClickEvent() : ClickEventHook<Feature>() {
-        override fun onBind(viewHolder: RecyclerView.ViewHolder): View? {
-            return if (viewHolder is ViewHolder) {
-                viewHolder.infoButton
-            } else null
-        }
-
-        override fun onClick(
-            v: View,
-            position: Int,
-            fastAdapter: FastAdapter<Feature>,
-            item: Feature
-        ) {
-            Log.d("Fab", position.toString())
         }
     }
 

@@ -1,8 +1,11 @@
 package com.github.bkhezry.earthquake.model
 
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class Properties(
     @SerializedName("mag")
     val mag: Double,
@@ -19,27 +22,27 @@ data class Properties(
     @SerializedName("detail")
     val detail: String,
     @SerializedName("felt")
-    val felt: Any,
+    val felt: Double?,
     @SerializedName("cdi")
-    val cdi: Any,
+    val cdi: Double?,
     @SerializedName("mmi")
-    val mmi: Any,
+    val mmi: Double?,
     @SerializedName("alert")
-    val alert: Any,
+    val alert: String?,
     @SerializedName("status")
-    val status: String,
+    val status: String?,
     @SerializedName("tsunami")
-    val tsunami: Int,
+    val tsunami: Int?,
     @SerializedName("sig")
-    val sig: Int,
+    val sig: Int?,
     @SerializedName("net")
-    val net: String,
+    val net: String?,
     @SerializedName("code")
-    val code: String,
+    val code: String?,
     @SerializedName("ids")
     val ids: String,
     @SerializedName("sources")
-    val sources: String,
+    val sources: String?,
     @SerializedName("types")
     val types: String,
     @SerializedName("nst")
@@ -56,4 +59,4 @@ data class Properties(
     val type: String,
     @SerializedName("title")
     val title: String
-)
+) : Parcelable
