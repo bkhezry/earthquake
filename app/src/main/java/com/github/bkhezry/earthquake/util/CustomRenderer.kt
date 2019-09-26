@@ -8,20 +8,20 @@ import com.google.maps.android.clustering.ClusterManager
 import com.google.maps.android.clustering.view.DefaultClusterRenderer
 
 class CustomRenderer(context: Context, map: GoogleMap, clusterManager: ClusterManager<Feature>) :
-    DefaultClusterRenderer<Feature>(
-        context,
-        map, clusterManager
-    ) {
+  DefaultClusterRenderer<Feature>(
+    context,
+    map, clusterManager
+  ) {
 
-    override fun onBeforeClusterItemRendered(item: Feature?, markerOptions: MarkerOptions?) {
-        super.onBeforeClusterItemRendered(item, markerOptions)
-        markerOptions!!.icon(
-            AppUtil.setEarthquakeMarker(
-                "M " + String.format(
-                    "%.1f",
-                    item!!.properties.mag
-                )
-            )
+  override fun onBeforeClusterItemRendered(item: Feature?, markerOptions: MarkerOptions?) {
+    super.onBeforeClusterItemRendered(item, markerOptions)
+    markerOptions!!.icon(
+      AppUtil.setEarthquakeMarker(
+        "M " + String.format(
+          "%.1f",
+          item!!.properties.mag
         )
-    }
+      )
+    )
+  }
 }
