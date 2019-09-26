@@ -36,7 +36,7 @@
             app:navigationIcon="@drawable/ic_menu_black_24dp" />
 
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-            android:id="@+id/next_days_button"
+            android:id="@+id/filter_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -69,7 +69,8 @@
                 app:menu="@menu/navigation" />
         </FrameLayout>
 
-
+        <!-- include bottom sheet -->
+        <include layout="@layout/bottom_sheet" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 

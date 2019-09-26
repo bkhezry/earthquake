@@ -3,6 +3,7 @@ package com.github.bkhezry.earthquake.ui.activity
 import android.animation.Animator
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
@@ -64,11 +65,14 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
   private val itemAdapter = ItemAdapter<Feature>()
   private lateinit var fastAdapter: FastAdapter<Feature>
   private lateinit var customRenderer: CustomRenderer
+  private lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
+
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_main)
     ButterKnife.bind(this)
     setSupportActionBar(bar)
+    setUpBottomSheet()
     val params: (ViewGroup.MarginLayoutParams) =
       boundFab.layoutParams as ViewGroup.MarginLayoutParams
     params.bottomMargin =
@@ -122,7 +126,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         }
         true
       }
-
   }
 
   private fun setupBottomDrawer() {
@@ -134,6 +137,12 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     }
     bar.setNavigationIcon(R.drawable.ic_menu_black_24dp)
 
+  }
+
+  private fun setUpBottomSheet() {
+    val llBottomSheet = coordinatorLayout.findViewById(R.id.bottom_sheet) as View
+    bottomSheetBehavior = BottomSheetBehavior.from(llBottomSheet)
+    bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
   }
 
   override fun onMapReady(googleMap: GoogleMap) {
@@ -304,7 +313,28 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
   @OnClick(R.id.bound_fab)
   fun bound() {
-    boundBox(mEarthquakeHourResponse.features)
+    Handler().postDelayed({
+      boundBox(mEarthquakeHourResponse.features)
+    }, 100)
+
+  }
+
+  @OnClick(R.id.filter_button)
+  fun filter() {
+    expandBottomSheet()
+  }
+
+  @OnClick(R.id.filter_done_button)
+  fun filterDone() {
+    hideBottomSheet()
+  }
+
+  private fun hideBottomSheet() {
+    bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+  }
+
+  private fun expandBottomSheet() {
+    bottomSheetBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
   }
 
   override fun onDestroy() {
