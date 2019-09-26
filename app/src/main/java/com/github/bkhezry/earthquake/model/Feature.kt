@@ -81,7 +81,9 @@ data class Feature(
       calendar.timeInMillis = item.properties.time
       val format = SimpleDateFormat("E, MMM d, yyyy  hh:mm", Locale.getDefault())
       val stringArray = item.properties.place.split("of")
-      title.text = stringArray[1]
+      if (stringArray.size == 2) {
+        title.text = stringArray[1]
+      }
       mag.text = view.context.getString(R.string.mag_label)
         .plus(
           String.format(
