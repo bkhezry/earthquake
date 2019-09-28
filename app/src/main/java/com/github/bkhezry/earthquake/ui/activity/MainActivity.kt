@@ -393,4 +393,13 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     super.onDestroy()
     disposable.dispose()
   }
+
+  override fun onBackPressed() {
+    if (bottomSheetBehavior.state != BottomSheetBehavior.STATE_HIDDEN) {
+      hideBottomSheet()
+    } else {
+      super.onBackPressed()
+    }
+
+  }
 }
