@@ -58,7 +58,9 @@ class EarthquakeDetailActivity : AppCompatActivity(), OnMapReadyCallback {
       countryTextView.text = country
     }
     magTextView.text = String.format("%.1f", feature.properties.mag)
-    cityTextView.text = stringArray2[1]
+    if (stringArray2.size == 2) {
+      cityTextView.text = stringArray2[1]
+    }
     coordinatesTextView.text =
       String.format(
         "%.3f", feature.geometry.coordinates[1]
