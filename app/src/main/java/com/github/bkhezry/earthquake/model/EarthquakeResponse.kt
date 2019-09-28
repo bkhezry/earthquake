@@ -3,7 +3,7 @@ package com.github.bkhezry.earthquake.model
 
 import com.google.gson.annotations.SerializedName
 
-data class EarthquakeHourResponse(
+data class EarthquakeResponse(
   @SerializedName("type")
   val type: String,
   @SerializedName("metadata")

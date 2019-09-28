@@ -18,7 +18,7 @@ import butterknife.ButterKnife
 import butterknife.OnClick
 import com.github.bkhezry.earthquake.R
 import com.github.bkhezry.earthquake.listener.CardClickListener
-import com.github.bkhezry.earthquake.model.EarthquakeHourResponse
+import com.github.bkhezry.earthquake.model.EarthquakeResponse
 import com.github.bkhezry.earthquake.model.Feature
 import com.github.bkhezry.earthquake.service.ApiService
 import com.github.bkhezry.earthquake.util.*
@@ -61,7 +61,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
   private lateinit var apiService: ApiService
   private val disposable = CompositeDisposable()
   private lateinit var mClusterManager: ClusterManager<Feature>
-  private lateinit var mEarthquakeHourResponse: EarthquakeHourResponse
+  private lateinit var mEarthquakeResponse: EarthquakeResponse
   private val itemAdapter = ItemAdapter<Feature>()
   private lateinit var fastAdapter: FastAdapter<Feature>
   private lateinit var customRenderer: CustomRenderer
@@ -272,7 +272,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
   }
 
   private fun getHourlyEarthquake() {
-    val subscribe = apiService.getHourlyEarthquake()
+    val subscribe = apiService.getEarthquakes()
       .subscribeOn(Schedulers.io())
       .observeOn(AndroidSchedulers.mainThread())
       .subscribe(this::handleHourlyResponse, this::handleHourlyError)
@@ -280,12 +280,12 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
   }
 
-  private fun handleHourlyResponse(earthquakeHourResponse: EarthquakeHourResponse) {
-    mEarthquakeHourResponse = earthquakeHourResponse
-    mClusterManager.addItems(earthquakeHourResponse.features)
-    boundBox(earthquakeHourResponse.features)
+  private fun handleHourlyResponse(earthquakeResponse: EarthquakeResponse) {
+    mEarthquakeResponse = earthquakeResponse
+    mClusterManager.addItems(earthquakeResponse.features)
+    boundBox(earthquakeResponse.features)
     itemAdapter.clear()
-    for (item in earthquakeHourResponse.features) {
+    for (item in earthquakeResponse.features) {
       item.isSelectable = true
       val feature = Feature(item.typeString, item.properties, item.geometry, item.id)
       itemAdapter.add(feature)
@@ -314,7 +314,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
   @OnClick(R.id.bound_fab)
   fun bound() {
     Handler().postDelayed({
-      boundBox(mEarthquakeHourResponse.features)
+      boundBox(mEarthquakeResponse.features)
     }, 100)
 
   }
