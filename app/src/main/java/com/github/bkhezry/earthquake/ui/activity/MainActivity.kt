@@ -32,6 +32,7 @@ import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.chip.ChipGroup
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.maps.android.clustering.Cluster
 import com.google.maps.android.clustering.ClusterManager
@@ -55,6 +56,10 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
   lateinit var boundFab: FloatingActionButton
   @BindView(R.id.recycler_view)
   lateinit var recyclerView: GravitySnapRecyclerView
+  @BindView(R.id.chip_group_1)
+  lateinit var chipGroup1: ChipGroup
+  @BindView(R.id.chip_group_2)
+  lateinit var chipGroup2: ChipGroup
   private lateinit var bottomDrawerBehavior: BottomSheetBehavior<View>
   private lateinit var mMap: GoogleMap
   private lateinit var grayScaleStyle: MapStyleOptions
@@ -66,6 +71,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
   private lateinit var fastAdapter: FastAdapter<Feature>
   private lateinit var customRenderer: CustomRenderer
   private lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
+  private lateinit var sharedPreferencesUtil: SharedPreferencesUtil
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -73,6 +79,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     ButterKnife.bind(this)
     setSupportActionBar(bar)
     setUpBottomSheet()
+    sharedPreferencesUtil = SharedPreferencesUtil.getInstance(this)
     val params: (ViewGroup.MarginLayoutParams) =
       boundFab.layoutParams as ViewGroup.MarginLayoutParams
     params.bottomMargin =
@@ -81,7 +88,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     val mapFragment = supportFragmentManager
       .findFragmentById(R.id.map) as SupportMapFragment
     grayScaleStyle = MapStyleOptions.loadRawResourceStyle(this, R.raw.mapstyle_grayscale)
-    mapFragment.getMapAsync(this)
     setupBottomDrawer()
     apiService = ApiClient.getClient()!!.create(ApiService::class.java)
     fastAdapter = FastAdapter.with(itemAdapter)
@@ -126,6 +132,20 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         }
         true
       }
+    when {
+      sharedPreferencesUtil.timeSelected == 0 -> chipGroup1.check(R.id.time_chip_0)
+      sharedPreferencesUtil.timeSelected == 1 -> chipGroup1.check(R.id.time_chip_1)
+      sharedPreferencesUtil.timeSelected == 2 -> chipGroup1.check(R.id.time_chip_2)
+      sharedPreferencesUtil.timeSelected == 3 -> chipGroup1.check(R.id.time_chip_3)
+    }
+    when {
+      sharedPreferencesUtil.scaleSelected == 0 -> chipGroup2.check(R.id.scale_chip_0)
+      sharedPreferencesUtil.scaleSelected == 1 -> chipGroup2.check(R.id.scale_chip_1)
+      sharedPreferencesUtil.scaleSelected == 2 -> chipGroup2.check(R.id.scale_chip_2)
+      sharedPreferencesUtil.scaleSelected == 3 -> chipGroup2.check(R.id.scale_chip_3)
+      sharedPreferencesUtil.scaleSelected == 4 -> chipGroup2.check(R.id.scale_chip_4)
+    }
+    mapFragment.getMapAsync(this)
   }
 
   private fun setupBottomDrawer() {
@@ -149,7 +169,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     mMap = googleMap
     setupMapSettings()
     setupClusterManager()
-    getHourlyEarthquake()
+    getEarthquake()
     mMap.setOnMapClickListener {
       toggleRecyclerViewVisibility()
     }
@@ -271,18 +291,27 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     return true
   }
 
-  private fun getHourlyEarthquake() {
-    val subscribe = apiService.getEarthquakes()
+  private fun getEarthquake() {
+    val subscribe = apiService.getEarthquakes(
+      Constants.END_POINTS[sharedPreferencesUtil.timeSelected.toString().plus(
+        sharedPreferencesUtil.scaleSelected.toString()
+      )].toString()
+    )
       .subscribeOn(Schedulers.io())
       .observeOn(AndroidSchedulers.mainThread())
-      .subscribe(this::handleHourlyResponse, this::handleHourlyError)
+      .subscribe(this::handleResponse, this::handleError)
     disposable.add(subscribe)
 
   }
 
-  private fun handleHourlyResponse(earthquakeResponse: EarthquakeResponse) {
+  private fun handleResponse(earthquakeResponse: EarthquakeResponse) {
     mEarthquakeResponse = earthquakeResponse
+    mClusterManager.clearItems()
+    mClusterManager.cluster()
     mClusterManager.addItems(earthquakeResponse.features)
+    Handler().postDelayed({
+      mClusterManager.cluster()
+    }, 100)
     boundBox(earthquakeResponse.features)
     itemAdapter.clear()
     for (item in earthquakeResponse.features) {
@@ -306,7 +335,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     }
   }
 
-  private fun handleHourlyError(error: Throwable) {
+  private fun handleError(error: Throwable) {
     Log.d("message:", error.localizedMessage)
 
   }
@@ -326,6 +355,29 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
   @OnClick(R.id.filter_done_button)
   fun filterDone() {
+    //hideBottomSheet()
+    var timeChipSelected = 0
+    var scaleChipSelected = 0
+    when {
+      chipGroup1.checkedChipId == R.id.time_chip_0 -> timeChipSelected = 0
+      chipGroup1.checkedChipId == R.id.time_chip_1 -> timeChipSelected = 1
+      chipGroup1.checkedChipId == R.id.time_chip_2 -> timeChipSelected = 2
+      chipGroup1.checkedChipId == R.id.time_chip_3 -> timeChipSelected = 3
+    }
+    when {
+      chipGroup2.checkedChipId == R.id.scale_chip_0 -> scaleChipSelected = 0
+      chipGroup2.checkedChipId == R.id.scale_chip_1 -> scaleChipSelected = 1
+      chipGroup2.checkedChipId == R.id.scale_chip_2 -> scaleChipSelected = 2
+      chipGroup2.checkedChipId == R.id.scale_chip_3 -> scaleChipSelected = 3
+      chipGroup2.checkedChipId == R.id.scale_chip_4 -> scaleChipSelected = 4
+    }
+    setFilter(timeChipSelected, scaleChipSelected)
+  }
+
+  private fun setFilter(timeChipSelected: Int, scaleChipSelected: Int) {
+    sharedPreferencesUtil.scaleSelected = scaleChipSelected
+    sharedPreferencesUtil.timeSelected = timeChipSelected
+    getEarthquake()
     hideBottomSheet()
   }
 
