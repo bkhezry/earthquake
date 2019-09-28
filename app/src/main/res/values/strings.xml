@@ -1,6 +1,5 @@
 <resources>
-    <string name="app_name">EarthquakeApp</string>
-    <string name="title_activity_maps">Map</string>
+    <string name="app_name">Earthquake</string>
     <string name="mag_label">M&#160;</string>
     <string name="usa_label">United States,&#160;</string>
 </resources>
