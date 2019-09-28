@@ -27,13 +27,14 @@
             android:textColor="@android:color/black" />
 
         <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chip_group_1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:checkedChip="@id/time_chip1"
+            app:checkedChip="@id/time_chip_0"
             app:singleSelection="true">
 
             <com.google.android.material.chip.Chip
-                android:id="@+id/time_chip1"
+                android:id="@+id/time_chip_0"
                 style="@style/CustomChipChoice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -42,7 +43,7 @@
                 app:chipStrokeWidth="1dp" />
 
             <com.google.android.material.chip.Chip
-                android:id="@+id/time_chip2"
+                android:id="@+id/time_chip_1"
                 style="@style/CustomChipChoice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -51,7 +52,7 @@
                 app:chipStrokeWidth="1dp" />
 
             <com.google.android.material.chip.Chip
-                android:id="@+id/time_chip3"
+                android:id="@+id/time_chip_2"
                 style="@style/CustomChipChoice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -60,7 +61,7 @@
                 app:chipStrokeWidth="1dp" />
 
             <com.google.android.material.chip.Chip
-                android:id="@+id/time_chip4"
+                android:id="@+id/time_chip_3"
                 style="@style/CustomChipChoice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -86,13 +87,14 @@
             android:textColor="@android:color/black" />
 
         <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chip_group_2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:checkedChip="@id/scale_chip1"
+            app:checkedChip="@id/scale_chip_0"
             app:singleSelection="true">
 
             <com.google.android.material.chip.Chip
-                android:id="@+id/scale_chip1"
+                android:id="@+id/scale_chip_0"
                 style="@style/CustomChipChoice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -101,7 +103,7 @@
                 app:chipStrokeWidth="1dp" />
 
             <com.google.android.material.chip.Chip
-                android:id="@+id/scale_chip2"
+                android:id="@+id/scale_chip_1"
                 style="@style/CustomChipChoice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -110,7 +112,7 @@
                 app:chipStrokeWidth="1dp" />
 
             <com.google.android.material.chip.Chip
-                android:id="@+id/scale_chip3"
+                android:id="@+id/scale_chip_2"
                 style="@style/CustomChipChoice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -119,7 +121,7 @@
                 app:chipStrokeWidth="1dp" />
 
             <com.google.android.material.chip.Chip
-                android:id="@+id/scale_chip4"
+                android:id="@+id/scale_chip_3"
                 style="@style/CustomChipChoice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -128,7 +130,7 @@
                 app:chipStrokeWidth="1dp" />
 
             <com.google.android.material.chip.Chip
-                android:id="@+id/scale_chip5"
+                android:id="@+id/scale_chip_4"
                 style="@style/CustomChipChoice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
