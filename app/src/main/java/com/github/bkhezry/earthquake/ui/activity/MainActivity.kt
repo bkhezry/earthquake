@@ -79,17 +79,13 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     ButterKnife.bind(this)
     setSupportActionBar(bar)
     setUpBottomSheet()
-    sharedPreferencesUtil = SharedPreferencesUtil.getInstance(this)
-    val params: (ViewGroup.MarginLayoutParams) =
-      boundFab.layoutParams as ViewGroup.MarginLayoutParams
-    params.bottomMargin =
-      AppUtil.getActionBarHeight(this) + AppUtil.dpToPx(135f)
-    // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-    val mapFragment = supportFragmentManager
-      .findFragmentById(R.id.map) as SupportMapFragment
-    grayScaleStyle = MapStyleOptions.loadRawResourceStyle(this, R.raw.mapstyle_grayscale)
     setupBottomDrawer()
-    apiService = ApiClient.getClient()!!.create(ApiService::class.java)
+    initVariables()
+    setupRecyclerView()
+    initMap()
+  }
+
+  private fun setupRecyclerView() {
     fastAdapter = FastAdapter.with(itemAdapter)
     fastAdapter.getSelectExtension().apply {
       isSelectable = false
@@ -132,6 +128,15 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         }
         true
       }
+  }
+
+  private fun initVariables() {
+    val params: (ViewGroup.MarginLayoutParams) =
+      boundFab.layoutParams as ViewGroup.MarginLayoutParams
+    params.bottomMargin =
+      AppUtil.getActionBarHeight(this) + AppUtil.dpToPx(135f)
+    apiService = ApiClient.getClient()!!.create(ApiService::class.java)
+    sharedPreferencesUtil = SharedPreferencesUtil.getInstance(this)
     when {
       sharedPreferencesUtil.timeSelected == 0 -> chipGroup1.check(R.id.time_chip_0)
       sharedPreferencesUtil.timeSelected == 1 -> chipGroup1.check(R.id.time_chip_1)
@@ -145,6 +150,12 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
       sharedPreferencesUtil.scaleSelected == 3 -> chipGroup2.check(R.id.scale_chip_3)
       sharedPreferencesUtil.scaleSelected == 4 -> chipGroup2.check(R.id.scale_chip_4)
     }
+  }
+
+  private fun initMap() {
+    val mapFragment = supportFragmentManager
+      .findFragmentById(R.id.map) as SupportMapFragment
+    grayScaleStyle = MapStyleOptions.loadRawResourceStyle(this, R.raw.mapstyle_grayscale)
     mapFragment.getMapAsync(this)
   }
 
