@@ -167,7 +167,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
       bottomDrawerBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
     }
     bar.setNavigationIcon(R.drawable.ic_menu_black_24dp)
-
   }
 
   private fun setUpBottomSheet() {
@@ -184,7 +183,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     mMap.setOnMapClickListener {
       toggleRecyclerViewVisibility()
     }
-
   }
 
   private fun toggleRecyclerViewVisibility() {
@@ -280,8 +278,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
       AppUtil.getActionBarHeight(this) + AppUtil.dpToPx(130f)
     )
     // Add a marker in Sydney and move the camera
-    val tehran = LatLng(35.6892, 51.3890)
-    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(tehran, 9f))
+    val zeroCoordinates = LatLng(0.0, 0.0)
+    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(zeroCoordinates, 2f))
     mMap.uiSettings.isMyLocationButtonEnabled = false
     mMap.uiSettings.isRotateGesturesEnabled = false
   }
@@ -303,11 +301,11 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
   }
 
   private fun getEarthquake() {
-    val subscribe = apiService.getEarthquakes(
-      Constants.END_POINTS[sharedPreferencesUtil.timeSelected.toString().plus(
-        sharedPreferencesUtil.scaleSelected.toString()
-      )].toString()
-    )
+    val endpoint = Constants.END_POINTS[
+        sharedPreferencesUtil.timeSelected.toString().plus(
+          sharedPreferencesUtil.scaleSelected.toString()
+        )].toString()
+    val subscribe = apiService.getEarthquakes(endpoint)
       .subscribeOn(Schedulers.io())
       .observeOn(AndroidSchedulers.mainThread())
       .subscribe(this::handleResponse, this::handleError)
@@ -322,15 +320,25 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     mClusterManager.addItems(earthquakeResponse.features)
     Handler().postDelayed({
       mClusterManager.cluster()
+      boundBox(earthquakeResponse.features)
     }, 100)
-    boundBox(earthquakeResponse.features)
+    setRecyclerViewItems(earthquakeResponse.features)
+
+  }
+
+  private fun setRecyclerViewItems(features: List<Feature>) {
     itemAdapter.clear()
-    for (item in earthquakeResponse.features) {
-      item.isSelectable = true
+    val subList = getSubList(features, 0, 10)
+    for (item in subList) {
       val feature = Feature(item.typeString, item.properties, item.geometry, item.id)
       itemAdapter.add(feature)
     }
+  }
 
+  private fun getSubList(features: List<Feature>, page: Int, count: Int): List<Feature> {
+    val fromIndex = page * count
+    val toIndex = fromIndex + count
+    return features.subList(fromIndex, toIndex)
   }
 
   private fun boundBox(features: List<Feature>) {
