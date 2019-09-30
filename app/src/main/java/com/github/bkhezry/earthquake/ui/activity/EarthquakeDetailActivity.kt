@@ -107,7 +107,7 @@ class EarthquakeDetailActivity : AppCompatActivity(), OnMapReadyCallback {
       )
     )
     val markerOptions = MarkerOptions()
-    markerOptions.icon(AppUtil.setEarthquakeMarker(String.format("%.1f", feature.properties.mag)))
+    markerOptions.icon(AppUtil.setEarthquakeMarker(String.format("M %.1f", feature.properties.mag)))
     markerOptions.position(latLng)
     mMap.addMarker(markerOptions)
     mMap.uiSettings.isMyLocationButtonEnabled = false
