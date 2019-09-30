@@ -13,6 +13,18 @@
         android:layout_height="match_parent"
         tools:context=".ui.activity.MainActivity" />
 
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_marginBottom="100dp"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/md_grey_800"
+        android:indeterminateTintMode="src_atop"
+        android:visibility="gone" />
+
     <com.github.rubensousa.gravitysnaphelper.GravitySnapRecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"

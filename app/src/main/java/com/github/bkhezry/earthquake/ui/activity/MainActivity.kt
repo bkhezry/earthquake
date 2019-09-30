@@ -7,6 +7,7 @@ import android.os.Handler
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.app.ActivityOptionsCompat
@@ -60,6 +61,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
   lateinit var chipGroup1: ChipGroup
   @BindView(R.id.chip_group_2)
   lateinit var chipGroup2: ChipGroup
+  @BindView(R.id.progress_bar)
+  lateinit var progressBar: ProgressBar
   private lateinit var bottomDrawerBehavior: BottomSheetBehavior<View>
   private lateinit var mMap: GoogleMap
   private lateinit var grayScaleStyle: MapStyleOptions
@@ -181,80 +184,84 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     setupClusterManager()
     getEarthquake()
     mMap.setOnMapClickListener {
-      toggleRecyclerViewVisibility()
+      if (recyclerView.visibility == View.VISIBLE) {
+        hideRecyclerView()
+      } else {
+        showRecyclerView()
+      }
     }
   }
 
-  private fun toggleRecyclerViewVisibility() {
-    if (recyclerView.visibility == View.VISIBLE) {
-      recyclerView.animate()
-        .translationY(recyclerView.height.toFloat())
-        .alpha(0.0f)
-        .setDuration(200)
-        .setListener(object : Animator.AnimatorListener {
-          override fun onAnimationRepeat(animator: Animator?) {
+  private fun showRecyclerView() {
+    recyclerView.animate()
+      .translationY(0f)
+      .alpha(1.0f)
+      .setDuration(200)
+      .setListener(object : Animator.AnimatorListener {
+        override fun onAnimationRepeat(animator: Animator?) {
 
-          }
+        }
 
-          override fun onAnimationCancel(animator: Animator?) {
+        override fun onAnimationCancel(animator: Animator?) {
 
-          }
+        }
 
-          override fun onAnimationStart(animator: Animator?) {
+        override fun onAnimationStart(animator: Animator?) {
+          mMap.setPadding(
+            0,
+            0,
+            0,
+            AppUtil.getActionBarHeight(this@MainActivity) + AppUtil.dpToPx(130f)
+          )
+          val params: (ViewGroup.MarginLayoutParams) =
+            boundFab.layoutParams as ViewGroup.MarginLayoutParams
+          params.bottomMargin =
+            AppUtil.getActionBarHeight(this@MainActivity) + AppUtil.dpToPx(135f)
+          recyclerView.clearAnimation()
+          recyclerView.visibility = View.VISIBLE
+        }
 
-          }
+        override fun onAnimationEnd(animator: Animator?) {
 
-          override fun onAnimationEnd(animator: Animator?) {
-            mMap.setPadding(
-              0,
-              0,
-              0,
-              AppUtil.getActionBarHeight(this@MainActivity) + AppUtil.dpToPx(20f)
-            )
-            val params: (ViewGroup.MarginLayoutParams) =
-              boundFab.layoutParams as ViewGroup.MarginLayoutParams
-            params.bottomMargin =
-              AppUtil.getActionBarHeight(this@MainActivity) + AppUtil.dpToPx(20f)
-            recyclerView.clearAnimation()
-            recyclerView.visibility = View.GONE
-          }
+        }
 
-        })
-    } else {
-      recyclerView.animate()
-        .translationY(0f)
-        .alpha(1.0f)
-        .setDuration(200)
-        .setListener(object : Animator.AnimatorListener {
-          override fun onAnimationRepeat(animator: Animator?) {
+      })
+  }
 
-          }
+  private fun hideRecyclerView() {
+    recyclerView.animate()
+      .translationY(recyclerView.height.toFloat())
+      .alpha(0.0f)
+      .setDuration(200)
+      .setListener(object : Animator.AnimatorListener {
+        override fun onAnimationRepeat(animator: Animator?) {
 
-          override fun onAnimationCancel(animator: Animator?) {
+        }
 
-          }
+        override fun onAnimationCancel(animator: Animator?) {
 
-          override fun onAnimationStart(animator: Animator?) {
-            mMap.setPadding(
-              0,
-              0,
-              0,
-              AppUtil.getActionBarHeight(this@MainActivity) + AppUtil.dpToPx(130f)
-            )
-            val params: (ViewGroup.MarginLayoutParams) =
-              boundFab.layoutParams as ViewGroup.MarginLayoutParams
-            params.bottomMargin =
-              AppUtil.getActionBarHeight(this@MainActivity) + AppUtil.dpToPx(135f)
-            recyclerView.clearAnimation()
-            recyclerView.visibility = View.VISIBLE
-          }
+        }
 
-          override fun onAnimationEnd(animator: Animator?) {
+        override fun onAnimationStart(animator: Animator?) {
 
-          }
+        }
 
-        })
-    }
+        override fun onAnimationEnd(animator: Animator?) {
+          mMap.setPadding(
+            0,
+            0,
+            0,
+            AppUtil.getActionBarHeight(this@MainActivity) + AppUtil.dpToPx(20f)
+          )
+          val params: (ViewGroup.MarginLayoutParams) =
+            boundFab.layoutParams as ViewGroup.MarginLayoutParams
+          params.bottomMargin =
+            AppUtil.getActionBarHeight(this@MainActivity) + AppUtil.dpToPx(20f)
+          recyclerView.clearAnimation()
+          recyclerView.visibility = View.GONE
+        }
+
+      })
   }
 
   private fun setupClusterManager() {
@@ -290,6 +297,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
       features.add(item)
     }
     boundBox(features)
+    mClusterManager.cluster()
     return true
   }
 
@@ -301,6 +309,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
   }
 
   private fun getEarthquake() {
+    progressBar.visibility = View.VISIBLE
     val endpoint = Constants.END_POINTS[
         sharedPreferencesUtil.timeSelected.toString().plus(
           sharedPreferencesUtil.scaleSelected.toString()
@@ -314,6 +323,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
   }
 
   private fun handleResponse(earthquakeResponse: EarthquakeResponse) {
+    progressBar.visibility = View.GONE
     mEarthquakeResponse = earthquakeResponse
     mClusterManager.clearItems()
     mClusterManager.cluster()
@@ -355,6 +365,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
   }
 
   private fun handleError(error: Throwable) {
+    progressBar.visibility = View.GONE
     Log.d("message:", error.localizedMessage)
 
   }
