@@ -4,7 +4,6 @@ import android.animation.Animator
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
@@ -366,8 +365,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
   private fun handleError(error: Throwable) {
     progressBar.visibility = View.GONE
-    Log.d("message:", error.localizedMessage)
-
+    error.printStackTrace()
   }
 
   @OnClick(R.id.bound_fab)
