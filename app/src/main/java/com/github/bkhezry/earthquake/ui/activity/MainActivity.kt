@@ -7,6 +7,7 @@ import android.os.Handler
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.app.ActivityOptionsCompat
@@ -62,6 +63,10 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
   lateinit var chipGroup2: ChipGroup
   @BindView(R.id.progress_bar)
   lateinit var progressBar: ProgressBar
+  @BindView(R.id.filter_name_text_view)
+  lateinit var filterNameTextView: TextView
+  @BindView(R.id.record_count_text_view)
+  lateinit var recordCountTextView: TextView
   private lateinit var bottomDrawerBehavior: BottomSheetBehavior<View>
   private lateinit var mMap: GoogleMap
   private lateinit var grayScaleStyle: MapStyleOptions
@@ -152,6 +157,10 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
       sharedPreferencesUtil.scaleSelected == 3 -> chipGroup2.check(R.id.scale_chip_3)
       sharedPreferencesUtil.scaleSelected == 4 -> chipGroup2.check(R.id.scale_chip_4)
     }
+    filterNameTextView.text =
+      Constants.END_POINTS_NAME[sharedPreferencesUtil.timeSelected.toString().plus(
+        sharedPreferencesUtil.scaleSelected.toString()
+      )]
   }
 
   private fun initMap() {
@@ -296,7 +305,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
       features.add(item)
     }
     boundBox(features)
-    mClusterManager.cluster()
     return true
   }
 
@@ -322,6 +330,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
   }
 
   private fun handleResponse(earthquakeResponse: EarthquakeResponse) {
+    recordCountTextView.text = "#".plus(earthquakeResponse.metadata.count.toString())
     progressBar.visibility = View.GONE
     mEarthquakeResponse = earthquakeResponse
     mClusterManager.clearItems()
@@ -347,6 +356,9 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
   private fun getSubList(features: List<Feature>, page: Int, count: Int): List<Feature> {
     val fromIndex = page * count
     val toIndex = fromIndex + count
+    if (fromIndex == 0 && features.size < (toIndex - fromIndex)) {
+      return features
+    }
     return features.subList(fromIndex, toIndex)
   }
 
@@ -404,6 +416,10 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
   private fun setFilter(timeChipSelected: Int, scaleChipSelected: Int) {
     sharedPreferencesUtil.scaleSelected = scaleChipSelected
     sharedPreferencesUtil.timeSelected = timeChipSelected
+    filterNameTextView.text =
+      Constants.END_POINTS_NAME[sharedPreferencesUtil.timeSelected.toString().plus(
+        sharedPreferencesUtil.scaleSelected.toString()
+      )]
     getEarthquake()
     hideBottomSheet()
   }

@@ -27,6 +27,29 @@ class Constants {
         "33" to "4.5_month.geojson",
         "34" to "significant_month.geojson"
       )
+    var END_POINTS_NAME: HashMap<String, String> =
+      hashMapOf(
+        "00" to "Past Hour - All Earthquake",
+        "01" to "Past Hour - M1.0+",
+        "02" to "Past Hour - M2.5+",
+        "03" to "Past Hour - M4.5+",
+        "04" to "Past Hour - Significant",
+        "10" to "Past Day - All Earthquake",
+        "11" to "Past Day - M1.0+",
+        "12" to "Past Day - M2.5+",
+        "13" to "Past Day - M4.5+",
+        "14" to "Past Day - Significant",
+        "20" to "Past 7 Days - All Earthquake",
+        "21" to "Past 7 Days - M1.0+",
+        "22" to "Past 7 Days - M2.5+",
+        "23" to "Past 7 Days - M4.5+",
+        "24" to "Past 7 Days - Significant",
+        "30" to "Past 30 Days - All Earthquake",
+        "31" to "Past 30 Days - M1.0+",
+        "32" to "Past 30 Days - M2.5+",
+        "33" to "Past 30 Days - M4.5+",
+        "34" to "Past 30 Days - Significant"
+      )
     const val TIME_SELECTED = "time-selected"
     const val SCALE_SELECTED = "scale-selected"
   }
