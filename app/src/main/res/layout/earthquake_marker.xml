@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="120dp"
-    android:layout_height="70dp"
+    android:layout_width="60dp"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
@@ -33,20 +33,20 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="30dp"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <ImageView
+        <View
             android:id="@+id/marker_line"
-            android:layout_width="4dp"
-            android:layout_height="10dp"
+            android:layout_width="2dp"
+            android:layout_height="8dp"
             android:layout_gravity="center_horizontal"
             android:background="#D344B2" />
 
         <ImageView
             android:id="@+id/marker_end"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="-3dp"
             android:src="@drawable/ic_action_end_marker" />

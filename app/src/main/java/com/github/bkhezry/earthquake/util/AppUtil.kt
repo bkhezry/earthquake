@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Context.LAYOUT_INFLATER_SERVICE
 import android.content.res.Resources
 import android.graphics.Bitmap
-import android.graphics.Color
 import android.os.Build
 import android.os.VibrationEffect
 import android.os.Vibrator
@@ -13,7 +12,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.view.animation.Interpolator
-import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.CheckResult
@@ -68,12 +66,8 @@ class AppUtil {
           R.layout.earthquake_marker,
           null
         ) as LinearLayout
-      val markerLine = heroMarkerView.findViewById<View>(R.id.marker_line) as ImageView
-      val markerEnd = heroMarkerView.findViewById<View>(R.id.marker_end) as ImageView
       val markerEarthquake = heroMarkerView.findViewById<View>(R.id.mag_text_view) as TextView
       markerEarthquake.text = mag
-      markerLine.setBackgroundColor(Color.BLACK)
-      markerEnd.setImageResource(R.drawable.ic_action_end_marker)
       bitmap = createBitmapFromView(heroMarkerView)
       return BitmapDescriptorFactory.fromBitmap(bitmap)
     }
@@ -81,7 +75,7 @@ class AppUtil {
     private fun createBitmapFromView(view: View): Bitmap {
       view.measure(
         View.MeasureSpec.makeMeasureSpec(
-          dpToPx(90f), View.MeasureSpec.EXACTLY
+          dpToPx(60f), View.MeasureSpec.EXACTLY
         ),
         View.MeasureSpec.makeMeasureSpec(
 

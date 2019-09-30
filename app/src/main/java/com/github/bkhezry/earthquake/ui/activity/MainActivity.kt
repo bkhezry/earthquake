@@ -355,7 +355,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
   @OnClick(R.id.filter_done_button)
   fun filterDone() {
-    //hideBottomSheet()
     var timeChipSelected = 0
     var scaleChipSelected = 0
     when {
