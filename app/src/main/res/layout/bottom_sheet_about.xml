@@ -9,6 +9,7 @@
     android:clickable="true"
     android:focusable="true"
     app:behavior_hideable="true"
+    app:behavior_peekHeight="0dp"
     app:cardBackgroundColor="@android:color/white"
     app:cardCornerRadius="@dimen/spacing_medium"
     app:cardElevation="16dp"
@@ -27,6 +28,40 @@
             android:text="@string/night_mode_label"
             android:textColor="@android:color/black" />
 
+        <LinearLayout
+            android:id="@+id/toggle_info_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:minHeight="?attr/actionBarSize"
+            android:orientation="horizontal"
+            android:paddingStart="@dimen/spacing_large"
+            android:paddingTop="@dimen/spacing_medium"
+            android:paddingEnd="@dimen/spacing_large">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/application_info_title"
+                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                android:textColor="@android:color/black"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="@dimen/spacing_large"
+                android:layout_height="0dp" />
+
+            <ImageButton
+                android:id="@+id/toggle_info_button"
+                android:layout_width="?attr/actionBarSize"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:tint="@android:color/black"
+                app:srcCompat="@drawable/ic_keyboard_arrow_down_black_24dp" />
+
+        </LinearLayout>
+
         <androidx.core.widget.NestedScrollView
             android:id="@+id/nested_scroll_view"
             android:layout_width="match_parent"
@@ -39,46 +74,16 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:paddingStart="@dimen/spacing_large"
-                android:paddingTop="@dimen/spacing_medium"
                 android:paddingEnd="@dimen/spacing_large"
                 android:paddingBottom="@dimen/spacing_large">
 
-                <LinearLayout
-                    android:id="@+id/toggle_info_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:minHeight="?attr/actionBarSize"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/application_info_title"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-                        android:textColor="@android:color/black"
-                        android:textStyle="bold" />
-
-                    <View
-                        android:layout_width="@dimen/spacing_large"
-                        android:layout_height="wrap_content" />
-
-                    <ImageButton
-                        android:id="@+id/toggle_info_button"
-                        android:layout_width="?attr/actionBarSize"
-                        android:layout_height="?attr/actionBarSize"
-                        android:background="?attr/selectableItemBackgroundBorderless"
-                        android:tint="@android:color/black"
-                        app:srcCompat="@drawable/ic_keyboard_arrow_down_black_24dp" />
-
-                </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/expand_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
+                    android:animateLayoutChanges="true"
                     android:gravity="center_horizontal"
                     android:orientation="vertical"
                     android:visibility="gone">
