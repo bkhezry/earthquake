@@ -1,12 +1,15 @@
 package com.github.bkhezry.earthquake.ui.activity
 
+import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
 import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.browser.customtabs.CustomTabsIntent
 import butterknife.BindView
 import butterknife.ButterKnife
+import butterknife.OnClick
 import com.github.bkhezry.earthquake.R
 import com.github.bkhezry.earthquake.model.Feature
 import com.github.bkhezry.earthquake.util.AppUtil
@@ -113,5 +116,12 @@ class EarthquakeDetailActivity : AppCompatActivity(), OnMapReadyCallback {
     mMap.uiSettings.isMyLocationButtonEnabled = false
     mMap.uiSettings.isRotateGesturesEnabled = false
     mMap.uiSettings.isScrollGesturesEnabled = false
+  }
+
+  @OnClick(R.id.detail_button)
+  fun browseDetail() {
+    val builder = CustomTabsIntent.Builder()
+    val customTabsIntent = builder.build()
+    customTabsIntent.launchUrl(this, Uri.parse(feature.properties.url))
   }
 }
