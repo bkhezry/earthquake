@@ -30,6 +30,7 @@
             android:id="@+id/chip_group_1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_medium"
             app:checkedChip="@id/time_chip_0"
             app:singleSelection="true">
 
@@ -90,6 +91,7 @@
             android:id="@+id/chip_group_2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_medium"
             app:checkedChip="@id/scale_chip_0"
             app:singleSelection="true">
 
