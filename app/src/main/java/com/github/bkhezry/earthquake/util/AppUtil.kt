@@ -1,5 +1,6 @@
 package com.github.bkhezry.earthquake.util
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Context.LAYOUT_INFLATER_SERVICE
 import android.content.res.Resources
@@ -7,8 +8,13 @@ import android.graphics.Bitmap
 import android.os.Build
 import android.os.VibrationEffect
 import android.os.Vibrator
+import android.text.Html
+import android.text.Spannable
+import android.text.TextUtils
+import android.text.style.ClickableSpan
 import android.util.TypedValue
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.view.animation.Interpolator
@@ -122,5 +128,53 @@ class AppUtil {
       val canMove = dm.widthPixels != dm.heightPixels && cfg.smallestScreenWidthDp < 600
       return !canMove || dm.widthPixels < dm.heightPixels
     }
+
+    @SuppressLint("ClickableViewAccessibility")
+    fun setTextWithLinks(textView: TextView, html: CharSequence?) {
+      textView.text = html
+      textView.setOnTouchListener(View.OnTouchListener { v, event ->
+        val action = event.action
+        if (action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_DOWN) {
+          var x = event.x.toInt()
+          var y = event.y.toInt()
+
+          val widget = v as TextView
+          x -= widget.totalPaddingLeft
+          y -= widget.totalPaddingTop
+
+          x += widget.scrollX
+          y += widget.scrollY
+
+          val layout = widget.layout
+          val line = layout.getLineForVertical(y)
+          val off = layout.getOffsetForHorizontal(line, x.toFloat())
+
+          val link = Spannable.Factory.getInstance()
+            .newSpannable(widget.text)
+            .getSpans(off, off, ClickableSpan::class.java)
+
+          if (link.isNotEmpty()) {
+            if (action == MotionEvent.ACTION_UP) {
+              link[0].onClick(widget)
+            }
+            return@OnTouchListener true
+          }
+        }
+        false
+      })
+    }
+
+    fun fromHtml(htmlText: String): CharSequence? {
+      if (TextUtils.isEmpty(htmlText)) {
+        return null
+      }
+      val spanned: CharSequence = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+        Html.fromHtml(htmlText, Html.FROM_HTML_MODE_LEGACY)
+      } else {
+        Html.fromHtml(htmlText)
+      }
+      return spanned.trim()
+    }
+
   }
 }

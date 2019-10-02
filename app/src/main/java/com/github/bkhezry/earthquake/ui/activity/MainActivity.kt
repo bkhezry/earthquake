@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.os.Handler
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
+import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -67,7 +69,10 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
   lateinit var filterNameTextView: TextView
   @BindView(R.id.record_count_text_view)
   lateinit var recordCountTextView: TextView
-  private lateinit var bottomDrawerBehavior: BottomSheetBehavior<View>
+  @BindView(R.id.toggle_info_button)
+  lateinit var toggleInfoButton: ImageButton
+  @BindView(R.id.expand_layout)
+  lateinit var expandLayout: LinearLayout
   private lateinit var mMap: GoogleMap
   private lateinit var grayScaleStyle: MapStyleOptions
   private lateinit var apiService: ApiService
@@ -77,7 +82,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
   private val itemAdapter = ItemAdapter<Feature>()
   private lateinit var fastAdapter: FastAdapter<Feature>
   private lateinit var customRenderer: CustomRenderer
-  private lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
+  private lateinit var bottomSheetFilterBehavior: BottomSheetBehavior<View>
+  private lateinit var bottomSheetAboutBehavior: BottomSheetBehavior<View>
   private lateinit var sharedPreferencesUtil: SharedPreferencesUtil
 
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -171,19 +177,44 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
   }
 
   private fun setupBottomDrawer() {
-    val bottomDrawer = coordinatorLayout.findViewById<View>(R.id.bottom_drawer)
-    bottomDrawerBehavior = BottomSheetBehavior.from(bottomDrawer)
-    bottomDrawerBehavior.state = BottomSheetBehavior.STATE_HIDDEN
     bar.setNavigationOnClickListener {
-      bottomDrawerBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
+      showAboutBottomSheet()
     }
     bar.setNavigationIcon(R.drawable.ic_menu_black_24dp)
   }
 
+  private fun showAboutBottomSheet() {
+    var versionName = ""
+    try {
+      versionName = packageManager.getPackageInfo(packageName, 0).versionName
+    } catch (e: Exception) {
+      // do nothing
+    }
+    setTextWithLinks(
+      findViewById(R.id.text_application_info),
+      getString(R.string.application_info_text, versionName)
+    )
+    setTextWithLinks(
+      findViewById(R.id.text_developer_info),
+      getString(R.string.developer_info_text)
+    )
+    setTextWithLinks(findViewById(R.id.text_design_api), getString(R.string.design_api_text))
+    setTextWithLinks(findViewById(R.id.text_libraries), getString(R.string.libraries_text))
+    setTextWithLinks(findViewById(R.id.text_license), getString(R.string.license_text))
+    bottomSheetAboutBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+  }
+
+  private fun setTextWithLinks(textView: TextView, htmlText: String) {
+    AppUtil.setTextWithLinks(textView, AppUtil.fromHtml(htmlText))
+  }
+
   private fun setUpBottomSheet() {
-    val llBottomSheet = coordinatorLayout.findViewById(R.id.bottom_sheet) as View
-    bottomSheetBehavior = BottomSheetBehavior.from(llBottomSheet)
-    bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+    val filterBottomSheet = coordinatorLayout.findViewById(R.id.bottom_sheet) as View
+    val aboutBottomSheet = coordinatorLayout.findViewById(R.id.bottom_sheet_about) as View
+    bottomSheetFilterBehavior = BottomSheetBehavior.from(filterBottomSheet)
+    bottomSheetFilterBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+    bottomSheetAboutBehavior = BottomSheetBehavior.from(aboutBottomSheet)
+    bottomSheetAboutBehavior.state = BottomSheetBehavior.STATE_HIDDEN
   }
 
   override fun onMapReady(googleMap: GoogleMap) {
@@ -425,11 +456,11 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
   }
 
   private fun hideBottomSheet() {
-    bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+    bottomSheetFilterBehavior.state = BottomSheetBehavior.STATE_HIDDEN
   }
 
   private fun expandBottomSheet() {
-    bottomSheetBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
+    bottomSheetFilterBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
   }
 
   override fun onDestroy() {
@@ -438,11 +469,32 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
   }
 
   override fun onBackPressed() {
-    if (bottomSheetBehavior.state != BottomSheetBehavior.STATE_HIDDEN) {
+    if (bottomSheetFilterBehavior.state != BottomSheetBehavior.STATE_HIDDEN) {
       hideBottomSheet()
     } else {
       super.onBackPressed()
     }
 
+  }
+
+  @OnClick(R.id.toggle_info_layout, R.id.toggle_info_button)
+  fun toggleInfoLayout() {
+    val show: Boolean = toggleArrow(toggleInfoButton)
+    if (show) {
+      ViewAnimation.expand(expandLayout)
+    } else {
+      ViewAnimation.collapse(expandLayout)
+    }
+  }
+
+
+  private fun toggleArrow(view: View): Boolean {
+    return if (view.rotation == 0f) {
+      view.animate().setDuration(200).rotation(180f)
+      true
+    } else {
+      view.animate().setDuration(200).rotation(0f)
+      false
+    }
   }
 }
