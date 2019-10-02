@@ -150,7 +150,8 @@
             android:textAllCaps="false"
             android:textColor="@android:color/black"
             app:cornerRadius="@dimen/spacing_medium"
-            app:icon="@drawable/ic_tune_black_24dp" />
+            app:icon="@drawable/ic_tune_black_24dp"
+            app:iconTint="@android:color/black" />
     </LinearLayout>
 
 </com.google.android.material.card.MaterialCardView>
