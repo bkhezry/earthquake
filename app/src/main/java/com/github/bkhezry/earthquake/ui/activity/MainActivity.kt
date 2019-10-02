@@ -161,7 +161,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
       sharedPreferencesUtil.scaleSelected == 1 -> chipGroup2.check(R.id.scale_chip_1)
       sharedPreferencesUtil.scaleSelected == 2 -> chipGroup2.check(R.id.scale_chip_2)
       sharedPreferencesUtil.scaleSelected == 3 -> chipGroup2.check(R.id.scale_chip_3)
-      sharedPreferencesUtil.scaleSelected == 4 -> chipGroup2.check(R.id.scale_chip_4)
     }
     filterNameTextView.text =
       Constants.END_POINTS_NAME[sharedPreferencesUtil.timeSelected.toString().plus(
@@ -439,7 +438,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
       chipGroup2.checkedChipId == R.id.scale_chip_1 -> scaleChipSelected = 1
       chipGroup2.checkedChipId == R.id.scale_chip_2 -> scaleChipSelected = 2
       chipGroup2.checkedChipId == R.id.scale_chip_3 -> scaleChipSelected = 3
-      chipGroup2.checkedChipId == R.id.scale_chip_4 -> scaleChipSelected = 4
     }
     setFilter(timeChipSelected, scaleChipSelected)
   }

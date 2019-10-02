@@ -131,15 +131,6 @@
                 app:chipStrokeColor="@color/md_grey_300"
                 app:chipStrokeWidth="1dp" />
 
-            <com.google.android.material.chip.Chip
-                android:id="@+id/scale_chip_4"
-                style="@style/CustomChipChoice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Significant Earthquakes"
-                app:chipStrokeColor="@color/md_grey_300"
-                app:chipStrokeWidth="1dp" />
-
         </com.google.android.material.chip.ChipGroup>
 
         <com.google.android.material.button.MaterialButton
