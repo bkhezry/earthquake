@@ -70,7 +70,7 @@
         </FrameLayout>
 
         <!-- include bottom sheet -->
-        <include layout="@layout/bottom_sheet" />
+        <include layout="@layout/bottom_sheet_filter" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 
