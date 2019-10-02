@@ -22,7 +22,7 @@ public class SharedPreferencesUtil {
   }
 
   public int getTimeSelected() {
-    return prefs.getInt(Constants.TIME_SELECTED, 0);
+    return prefs.getInt(Constants.TIME_SELECTED, 1);
   }
 
   public void setTimeSelected(int timeSelected) {
@@ -30,7 +30,7 @@ public class SharedPreferencesUtil {
   }
 
   public int getScaleSelected() {
-    return prefs.getInt(Constants.SCALE_SELECTED, 0);
+    return prefs.getInt(Constants.SCALE_SELECTED, 1);
   }
 
   public void setScaleSelected(int scaleSelected) {
