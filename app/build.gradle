@@ -6,6 +6,9 @@ apply plugin: 'kotlin-android-extensions'
 
 apply plugin: 'kotlin-kapt'
 
+def versionMajor = 1
+def versionMinor = 1
+def versionPatch = 0
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
@@ -13,8 +16,8 @@ android {
         applicationId "com.github.bkhezry.earthquake"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 1
-        versionName "1.0"
+        versionCode versionMajor * 10000 + versionMinor * 100 + versionPatch
+        versionName "${versionMajor}.${versionMinor}.${versionPatch}"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -77,7 +80,14 @@ dependencies {
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 }
-
+android.applicationVariants.all { variant ->
+    def appName = "Earthquake"
+    variant.outputs.all { output ->
+        def newApkName
+        newApkName = "${appName}-${output.baseName}-${variant.versionName}.apk"
+        output.outputFileName = new File(newApkName)
+    }
+}
 kapt {
     generateStubs = true
 }
