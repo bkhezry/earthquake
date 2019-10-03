@@ -239,6 +239,14 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     setupClusterManager()
     getEarthquake()
     mMap.setOnMapClickListener {
+      if (bottomSheetAboutBehavior.state == BottomSheetBehavior.STATE_EXPANDED) {
+        bottomSheetAboutBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+        return@setOnMapClickListener
+      }
+      if (bottomSheetFilterBehavior.state == BottomSheetBehavior.STATE_EXPANDED) {
+        bottomSheetFilterBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+        return@setOnMapClickListener
+      }
       if (recyclerView.visibility == View.VISIBLE) {
         hideRecyclerView()
       } else {
