@@ -30,8 +30,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
-                android:textColor="@color/md_grey_800" />
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Caption" />
 
             <View
                 android:layout_width="@dimen/spacing_medium"
@@ -43,7 +42,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
-                android:textColor="@color/md_grey_800"
                 android:textStyle="bold" />
 
         </LinearLayout>

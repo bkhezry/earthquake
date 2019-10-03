@@ -29,7 +29,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                android:textColor="@android:color/black"
                 android:textStyle="bold"
                 tools:text="6.3" />
 
@@ -42,7 +41,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
-                android:textColor="@android:color/black"
                 tools:text="Monday" />
         </LinearLayout>
 
@@ -63,6 +61,7 @@
                 android:layout_height="36dp"
                 android:layout_gravity="end"
                 android:background="?selectableItemBackgroundBorderless"
+                android:tint="?android:textColorPrimary"
                 app:srcCompat="@drawable/ic_launch_black_24dp" />
 
             <View
@@ -75,7 +74,6 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-                android:textColor="@android:color/black"
                 tools:text="Title" />
 
 

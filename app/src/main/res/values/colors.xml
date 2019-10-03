@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#ffffff</color>
-    <color name="colorPrimaryDark">#dddddd</color>
+    <color name="colorPrimaryDark">#FAFAFA</color>
     <color name="colorAccent">#D81B60</color>
     <color name="scrim">#99323232</color>
+    <color name="colorPrimaryNight">#263238</color>
+    <color name="colorPrimaryDarkNight">#141d26</color>
 </resources>
