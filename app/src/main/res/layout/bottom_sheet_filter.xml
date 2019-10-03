@@ -8,7 +8,7 @@
     android:focusable="true"
     android:orientation="vertical"
     app:behavior_hideable="true"
-    app:cardBackgroundColor="@android:color/white"
+    app:cardBackgroundColor="?attr/colorPrimaryDark"
     app:cardCornerRadius="@dimen/spacing_medium"
     app:cardElevation="16dp"
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
@@ -23,8 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Time Pass"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-            android:textColor="@android:color/black" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
 
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/chip_group_1"
@@ -40,6 +39,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Past Hour"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
                 app:chipStrokeColor="@color/md_grey_300"
                 app:chipStrokeWidth="1dp" />
 
@@ -49,6 +49,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Past Day"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
                 app:chipStrokeColor="@color/md_grey_300"
                 app:chipStrokeWidth="1dp" />
 
@@ -58,6 +59,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Past 7 Days"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
                 app:chipStrokeColor="@color/md_grey_300"
                 app:chipStrokeWidth="1dp" />
 
@@ -67,6 +69,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Past 30 Days"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
                 app:chipStrokeColor="@color/md_grey_300"
                 app:chipStrokeWidth="1dp" />
         </com.google.android.material.chip.ChipGroup>
@@ -78,14 +81,13 @@
             android:layout_marginTop="@dimen/spacing_middle"
             android:layout_marginEnd="@dimen/spacing_xlarge"
             android:layout_marginBottom="@dimen/spacing_middle"
-            android:background="@color/md_grey_200" />
+            android:background="@color/md_grey_300" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Richter Scale"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-            android:textColor="@android:color/black" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
 
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/chip_group_2"
@@ -101,6 +103,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="All Earthquakes"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
                 app:chipStrokeColor="@color/md_grey_300"
                 app:chipStrokeWidth="1dp" />
 
@@ -110,6 +113,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="M1.0+ Earthquakes"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
                 app:chipStrokeColor="@color/md_grey_300"
                 app:chipStrokeWidth="1dp" />
 
@@ -119,6 +123,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="M2.5+ Earthquakes"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
                 app:chipStrokeColor="@color/md_grey_300"
                 app:chipStrokeWidth="1dp" />
 
@@ -127,7 +132,9 @@
                 style="@style/CustomChipChoice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:backgroundTint="@color/colorPrimary"
                 android:text="M4.5+ Earthquakes"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
                 app:chipStrokeColor="@color/md_grey_300"
                 app:chipStrokeWidth="1dp" />
 
@@ -141,10 +148,10 @@
             android:layout_gravity="center"
             android:text="Filter"
             android:textAllCaps="false"
-            android:textColor="@android:color/black"
+            android:textColor="?android:textColorPrimary"
             app:cornerRadius="@dimen/spacing_medium"
             app:icon="@drawable/ic_tune_black_24dp"
-            app:iconTint="@android:color/black" />
+            app:iconTint="?android:textColorPrimary" />
     </LinearLayout>
 
 </com.google.android.material.card.MaterialCardView>
