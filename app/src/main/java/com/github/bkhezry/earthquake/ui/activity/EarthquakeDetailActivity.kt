@@ -15,6 +15,7 @@ import com.github.bkhezry.earthquake.model.Feature
 import com.github.bkhezry.earthquake.util.AppUtil
 import com.github.bkhezry.earthquake.util.Constants
 import com.github.bkhezry.earthquake.util.ElasticDragDismissFrameLayout
+import com.github.bkhezry.earthquake.util.SharedPreferencesUtil
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -28,9 +29,11 @@ import java.util.*
 
 class EarthquakeDetailActivity : AppCompatActivity(), OnMapReadyCallback {
 
+
   private lateinit var feature: Feature
   private lateinit var mMap: GoogleMap
   private lateinit var grayScaleStyle: MapStyleOptions
+  private lateinit var darkScaleStyle: MapStyleOptions
   @BindView(R.id.country_text_view)
   lateinit var countryTextView: TextView
   @BindView(R.id.mag_text_view)
@@ -90,6 +93,7 @@ class EarthquakeDetailActivity : AppCompatActivity(), OnMapReadyCallback {
     val mapFragment = supportFragmentManager
       .findFragmentById(R.id.map) as SupportMapFragment
     grayScaleStyle = MapStyleOptions.loadRawResourceStyle(this, R.raw.mapstyle_grayscale)
+    darkScaleStyle = MapStyleOptions.loadRawResourceStyle(this, R.raw.mapstyle_dark)
     mapFragment.getMapAsync(this)
   }
 
@@ -103,7 +107,11 @@ class EarthquakeDetailActivity : AppCompatActivity(), OnMapReadyCallback {
       feature.geometry.coordinates[1],
       feature.geometry.coordinates[0]
     )
-    mMap.setMapStyle(grayScaleStyle)
+    if (SharedPreferencesUtil.getInstance(this).isDarkThemeEnabled) {
+      mMap.setMapStyle(darkScaleStyle)
+    } else {
+      mMap.setMapStyle(grayScaleStyle)
+    }
     mMap.moveCamera(
       CameraUpdateFactory.newLatLngZoom(
         latLng, 4f

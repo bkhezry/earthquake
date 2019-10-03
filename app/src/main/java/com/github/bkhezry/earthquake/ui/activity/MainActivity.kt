@@ -79,6 +79,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
   lateinit var nightModeSwitch: SwitchCompat
   private lateinit var mMap: GoogleMap
   private lateinit var grayScaleStyle: MapStyleOptions
+  private lateinit var darkScaleStyle: MapStyleOptions
   private lateinit var apiService: ApiService
   private val disposable = CompositeDisposable()
   private lateinit var mClusterManager: ClusterManager<Feature>
@@ -106,7 +107,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
   private fun setupRecyclerView() {
     fastAdapter = FastAdapter.with(itemAdapter)
     fastAdapter.getSelectExtension().apply {
-      isSelectable = false
+      isSelectable = true
       multiSelect = false
       selectOnLongClick = false
     }
@@ -177,6 +178,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     val mapFragment = supportFragmentManager
       .findFragmentById(R.id.map) as SupportMapFragment
     grayScaleStyle = MapStyleOptions.loadRawResourceStyle(this, R.raw.mapstyle_grayscale)
+    darkScaleStyle = MapStyleOptions.loadRawResourceStyle(this, R.raw.mapstyle_dark)
     mapFragment.getMapAsync(this)
   }
 
@@ -330,7 +332,11 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
   }
 
   private fun setupMapSettings() {
-    mMap.setMapStyle(grayScaleStyle)
+    if (sharedPreferencesUtil.isDarkThemeEnabled) {
+      mMap.setMapStyle(darkScaleStyle)
+    } else {
+      mMap.setMapStyle(grayScaleStyle)
+    }
     mMap.setPadding(
       0,
       0,
