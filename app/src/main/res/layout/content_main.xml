@@ -63,7 +63,7 @@
         android:layout_centerVertical="true"
         android:layout_marginBottom="100dp"
         android:indeterminate="true"
-        android:indeterminateTint="@color/md_grey_800"
+        android:indeterminateTint="?android:textColorSecondary"
         android:indeterminateTintMode="src_atop"
         android:visibility="gone" />
 
