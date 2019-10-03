@@ -36,4 +36,12 @@ public class SharedPreferencesUtil {
   public void setScaleSelected(int scaleSelected) {
     prefs.edit().putInt(Constants.SCALE_SELECTED, scaleSelected).apply();
   }
+
+  public boolean isDarkThemeEnabled() {
+    return prefs.getBoolean(Constants.DARK_THEME, false);
+  }
+
+  public void setDarkThemeEnabled(boolean state) {
+    prefs.edit().putBoolean(Constants.DARK_THEME, state).apply();
+  }
 }

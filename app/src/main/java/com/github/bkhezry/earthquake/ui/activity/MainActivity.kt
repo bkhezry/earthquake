@@ -11,6 +11,8 @@ import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.widget.SwitchCompat
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.util.Pair
@@ -73,6 +75,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
   lateinit var toggleInfoButton: ImageButton
   @BindView(R.id.expand_layout)
   lateinit var expandLayout: LinearLayout
+  @BindView(R.id.night_mode_switch)
+  lateinit var nightModeSwitch: SwitchCompat
   private lateinit var mMap: GoogleMap
   private lateinit var grayScaleStyle: MapStyleOptions
   private lateinit var apiService: ApiService
@@ -94,6 +98,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     setUpBottomSheet()
     setupBottomDrawer()
     initVariables()
+    setupAboutBottomSheet()
     setupRecyclerView()
     initMap()
   }
@@ -177,12 +182,23 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
   private fun setupBottomDrawer() {
     bar.setNavigationOnClickListener {
-      showAboutBottomSheet()
+      bottomSheetAboutBehavior.state = BottomSheetBehavior.STATE_EXPANDED
     }
     bar.setNavigationIcon(R.drawable.ic_menu_black_24dp)
   }
 
-  private fun showAboutBottomSheet() {
+  private fun setupAboutBottomSheet() {
+    nightModeSwitch.isChecked = sharedPreferencesUtil.isDarkThemeEnabled
+    nightModeSwitch.setOnCheckedChangeListener { _, isChecked ->
+      sharedPreferencesUtil.isDarkThemeEnabled = isChecked
+      Handler().postDelayed({
+        if (isChecked) {
+          AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        } else {
+          AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        }
+      }, 300)
+    }
     var versionName = ""
     try {
       versionName = packageManager.getPackageInfo(packageName, 0).versionName
@@ -200,7 +216,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     setTextWithLinks(findViewById(R.id.text_design_api), getString(R.string.design_api_text))
     setTextWithLinks(findViewById(R.id.text_libraries), getString(R.string.libraries_text))
     setTextWithLinks(findViewById(R.id.text_license), getString(R.string.license_text))
-    bottomSheetAboutBehavior.state = BottomSheetBehavior.STATE_EXPANDED
   }
 
   private fun setTextWithLinks(textView: TextView, htmlText: String) {

@@ -44,5 +44,6 @@ class Constants {
       )
     const val TIME_SELECTED = "time-selected"
     const val SCALE_SELECTED = "scale-selected"
+    const val DARK_THEME = "dark-theme"
   }
 }
