@@ -54,18 +54,24 @@ class EarthquakeDetailActivity : AppCompatActivity(), OnMapReadyCallback {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_earthquake_detail)
     ButterKnife.bind(this)
+    initVariables()
+    setupMap()
+    setupDismissLayout()
+  }
+
+  private fun initVariables() {
     feature = intent.getParcelableExtra<Parcelable>(Constants.EXTRA_ITEM) as Feature
-    val stringArray = feature.properties.place.split(",")
-    val stringArray2 = stringArray[0].split("of")
-    val country = stringArray[stringArray.size - 1].trim()
-    if (country.length == 2) {
-      countryTextView.text = getString(R.string.usa_label).plus(country)
+    val placeArray = feature.properties.place.split(",")
+    val placeArraySplit = placeArray[0].split("of")
+    val countryName = placeArray[placeArray.size - 1].trim()
+    if (countryName.length == 2) {
+      countryTextView.text = getString(R.string.usa_label).plus(countryName)
     } else {
-      countryTextView.text = country
+      countryTextView.text = countryName
     }
     magTextView.text = String.format("%.1f", feature.properties.mag)
-    if (stringArray2.size == 2) {
-      cityTextView.text = stringArray2[1]
+    if (placeArraySplit.size == 2) {
+      cityTextView.text = placeArraySplit[1]
     }
     coordinatesTextView.text =
       String.format(
@@ -80,7 +86,18 @@ class EarthquakeDetailActivity : AppCompatActivity(), OnMapReadyCallback {
     val calendar = Calendar.getInstance()
     calendar.timeInMillis = feature.properties.time
     dateTimeTextView.text = format.format(calendar.time)
-    distanceTextView.text = stringArray[0]
+    distanceTextView.text = placeArray[0]
+  }
+
+  private fun setupMap() {
+    val mapFragment = supportFragmentManager
+      .findFragmentById(R.id.map) as SupportMapFragment
+    grayScaleStyle = MapStyleOptions.loadRawResourceStyle(this, R.raw.mapstyle_grayscale)
+    darkScaleStyle = MapStyleOptions.loadRawResourceStyle(this, R.raw.mapstyle_dark)
+    mapFragment.getMapAsync(this)
+  }
+
+  private fun setupDismissLayout() {
     val dismissFrameLayout =
       findViewById<View>(R.id.draggable_frame) as ElasticDragDismissFrameLayout
     dismissFrameLayout.addListener(object :
@@ -90,11 +107,6 @@ class EarthquakeDetailActivity : AppCompatActivity(), OnMapReadyCallback {
         finishAfterTransition()
       }
     })
-    val mapFragment = supportFragmentManager
-      .findFragmentById(R.id.map) as SupportMapFragment
-    grayScaleStyle = MapStyleOptions.loadRawResourceStyle(this, R.raw.mapstyle_grayscale)
-    darkScaleStyle = MapStyleOptions.loadRawResourceStyle(this, R.raw.mapstyle_dark)
-    mapFragment.getMapAsync(this)
   }
 
   override fun onMapReady(googleMap: GoogleMap) {
