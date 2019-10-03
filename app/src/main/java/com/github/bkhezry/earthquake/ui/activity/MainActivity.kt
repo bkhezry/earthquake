@@ -487,7 +487,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
   }
 
   private fun expandBottomSheet() {
-    bottomSheetFilterBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
+    bottomSheetFilterBehavior.state = BottomSheetBehavior.STATE_EXPANDED
   }
 
   override fun onDestroy() {
@@ -498,9 +498,13 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
   override fun onBackPressed() {
     if (bottomSheetFilterBehavior.state != BottomSheetBehavior.STATE_HIDDEN) {
       hideBottomSheet()
-    } else {
-      super.onBackPressed()
+      return
     }
+    if (bottomSheetAboutBehavior.state != BottomSheetBehavior.STATE_HIDDEN) {
+      bottomSheetAboutBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+      return
+    }
+    super.onBackPressed()
 
   }
 
