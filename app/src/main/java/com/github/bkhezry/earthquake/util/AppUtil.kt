@@ -3,8 +3,10 @@ package com.github.bkhezry.earthquake.util
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Context.LAYOUT_INFLATER_SERVICE
+import android.content.res.ColorStateList
 import android.content.res.Resources
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.os.Build
 import android.os.VibrationEffect
 import android.os.Vibrator
@@ -23,6 +25,8 @@ import android.widget.TextView
 import androidx.annotation.CheckResult
 import androidx.annotation.ColorInt
 import androidx.annotation.IntRange
+import androidx.cardview.widget.CardView
+import androidx.core.content.ContextCompat
 import com.github.bkhezry.earthquake.R
 import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
@@ -72,8 +76,18 @@ class AppUtil {
           R.layout.earthquake_marker,
           null
         ) as LinearLayout
+      val cardView = heroMarkerView.findViewById(R.id.marker_card_view) as CardView
+      val whiteColorStateList =
+        ContextCompat.getColorStateList(
+          MyApplication.applicationContext(),
+          android.R.color.white
+        ) as ColorStateList
       val markerEarthquake = heroMarkerView.findViewById<View>(R.id.mag_text_view) as TextView
       markerEarthquake.text = mag
+      if (SharedPreferencesUtil.getInstance(MyApplication.applicationContext()).isDarkThemeEnabled) {
+        cardView.backgroundTintList = whiteColorStateList
+        markerEarthquake.setTextColor(Color.BLACK)
+      }
       bitmap = createBitmapFromView(heroMarkerView)
       return BitmapDescriptorFactory.fromBitmap(bitmap)
     }
