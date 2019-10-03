@@ -10,7 +10,7 @@
     android:focusable="true"
     app:behavior_hideable="true"
     app:behavior_peekHeight="0dp"
-    app:cardBackgroundColor="@android:color/white"
+    app:cardBackgroundColor="?attr/colorPrimaryDark"
     app:cardCornerRadius="@dimen/spacing_medium"
     app:cardElevation="16dp"
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
@@ -26,7 +26,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:text="@string/night_mode_label"
-            android:textColor="@android:color/black" />
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
 
         <LinearLayout
             android:id="@+id/toggle_info_layout"
@@ -45,7 +45,6 @@
                 android:layout_weight="1"
                 android:text="@string/application_info_title"
                 android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-                android:textColor="@android:color/black"
                 android:textStyle="bold" />
 
             <View
@@ -57,7 +56,7 @@
                 android:layout_width="?attr/actionBarSize"
                 android:layout_height="?attr/actionBarSize"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:tint="@android:color/black"
+                android:tint="?android:textColorPrimary"
                 app:srcCompat="@drawable/ic_keyboard_arrow_down_black_24dp" />
 
         </LinearLayout>
@@ -92,51 +91,43 @@
                         android:id="@+id/text_application_info"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textColor="@android:color/black" />
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
 
                     <TextView
                         style="@style/HeadlineTextStyle"
-                        android:text="@string/developer_info_title"
-                        android:textColor="@android:color/black" />
+                        android:text="@string/developer_info_title" />
 
                     <TextView
                         android:id="@+id/text_developer_info"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textColor="@android:color/black" />
+                        android:layout_height="wrap_content" />
 
                     <TextView
                         style="@style/HeadlineTextStyle"
-                        android:text="@string/design_api_title"
-                        android:textColor="@android:color/black" />
+                        android:text="@string/design_api_title" />
 
                     <TextView
                         android:id="@+id/text_design_api"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textColor="@android:color/black" />
+                        android:layout_height="wrap_content" />
 
                     <TextView
                         style="@style/HeadlineTextStyle"
-                        android:text="@string/libraries_title"
-                        android:textColor="@android:color/black" />
+                        android:text="@string/libraries_title" />
 
                     <TextView
                         android:id="@+id/text_libraries"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textColor="@android:color/black" />
+                        android:layout_height="wrap_content" />
 
                     <TextView
                         style="@style/HeadlineTextStyle"
-                        android:text="@string/license_title"
-                        android:textColor="@android:color/black" />
+                        android:text="@string/license_title" />
 
                     <TextView
                         android:id="@+id/text_license"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textColor="@android:color/black" />
+                        android:layout_height="wrap_content" />
 
 
                 </LinearLayout>

@@ -11,7 +11,7 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/white">
+        android:background="?attr/colorPrimary">
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/card_view"
@@ -19,14 +19,14 @@
             android:layout_height="match_parent"
             android:layout_margin="@dimen/spacing_middle"
             android:transitionName="card_view"
-            app:cardBackgroundColor="?attr/colorPrimary"
+            app:cardBackgroundColor="?attr/colorPrimaryDark"
             app:cardCornerRadius="6dp"
             app:cardElevation="6dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="?attr/colorPrimary"
+                android:background="?attr/colorPrimaryDark"
                 android:orientation="vertical"
                 android:padding="@dimen/spacing_large">
 
@@ -49,9 +49,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="@dimen/spacing_middle"
+                        android:backgroundTint="?attr/colorPrimary"
                         android:text="View Details"
                         android:textAllCaps="false"
-                        android:textColor="@android:color/black"
+                        android:textColor="?android:textColorPrimary"
                         app:cornerRadius="10dp"
                         app:elevation="6dp" />
                 </LinearLayout>
@@ -67,7 +68,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                        android:textColor="@android:color/black"
+                        android:textColor="?android:textColorPrimary"
                         android:textStyle="bold"
                         tools:text="Indonesia" />
 
@@ -78,7 +79,7 @@
                         android:layout_weight="0.5"
                         android:gravity="end"
                         android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                        android:textColor="@android:color/black"
+                        android:textColor="?android:textColorPrimary"
                         android:textStyle="bold"
                         tools:text="6.9" />
                 </LinearLayout>
@@ -94,7 +95,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-                        android:textColor="@android:color/black"
+                        android:textColor="?android:textColorPrimary"
                         tools:text="Telega - Besar island" />
 
                     <TextView
@@ -104,7 +105,7 @@
                         android:gravity="end"
                         android:text="Richter scale"
                         android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-                        android:textColor="@android:color/black" />
+                        android:textColor="?android:textColorPrimary" />
                 </LinearLayout>
 
                 <View
@@ -138,8 +139,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Location"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-                            android:textColor="@color/md_grey_600" />
+                            android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -164,8 +164,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Depth"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-                            android:textColor="@color/md_grey_600" />
+                            android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
                     </LinearLayout>
 
 
@@ -186,7 +185,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                        android:textColor="@android:color/black"
+                        android:textColor="?android:textColorPrimary"
                         android:textStyle="bold"
                         tools:text="5.5089 S, 122.0298 E" />
 
@@ -196,7 +195,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                        android:textColor="@android:color/black"
+                        android:textColor="?android:textColorPrimary"
                         android:textStyle="bold"
                         tools:text="10 km depth" />
                 </LinearLayout>
@@ -232,8 +231,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Time"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-                            android:textColor="@color/md_grey_600" />
+                            android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -258,8 +256,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Distance"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-                            android:textColor="@color/md_grey_600" />
+                            android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
                     </LinearLayout>
 
 
@@ -280,7 +277,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                        android:textColor="@android:color/black"
+                        android:textColor="?android:textColorPrimary"
                         android:textStyle="bold"
                         tools:text="Dec 01, 2019. 10:30 AM" />
 
@@ -290,7 +287,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                        android:textColor="@android:color/black"
+                        android:textColor="?android:textColorPrimary"
                         android:textStyle="bold"
                         tools:text="10 km depth" />
                 </LinearLayout>

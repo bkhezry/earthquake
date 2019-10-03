@@ -27,6 +27,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:textColor="@android:color/white"
+                android:textStyle="bold"
                 tools:text="M 6.7" />
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
