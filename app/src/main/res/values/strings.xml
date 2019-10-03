@@ -65,4 +65,20 @@
            </p>
         ]]>
 </string>
+    <string name="view_details_label">View Details</string>
+    <string name="richter_scale_label">Richter Scale</string>
+    <string name="location_label">Location</string>
+    <string name="depth_label">Depth</string>
+    <string name="time_label">Time</string>
+    <string name="distance_label">Distance</string>
+    <string name="filter_label">Filter</string>
+    <string name="time_pass_label">Time Pass</string>
+    <string name="past_hour_label">Past Hour</string>
+    <string name="past_day_label">Past Day</string>
+    <string name="past_7_days_label">Past 7 Days</string>
+    <string name="past_30_days_label">Past 30 Days</string>
+    <string name="all_earthquakes_label">All Earthquakes</string>
+    <string name="m1_0_earthquakes_label">M1.0+ Earthquakes</string>
+    <string name="m2_5_earthquakes_label">M2.5+ Earthquakes</string>
+    <string name="m4_5_earthquakes_label">M4.5+ Earthquakes</string>
 </resources>

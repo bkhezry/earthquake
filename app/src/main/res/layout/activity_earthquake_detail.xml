@@ -50,7 +50,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="@dimen/spacing_middle"
                         android:backgroundTint="?attr/colorPrimary"
-                        android:text="View Details"
+                        android:text="@string/view_details_label"
                         android:textAllCaps="false"
                         android:textColor="?android:textColorPrimary"
                         app:cornerRadius="10dp"
@@ -103,7 +103,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="end"
-                        android:text="Richter scale"
+                        android:text="@string/richter_scale_label"
                         android:textAppearance="@style/TextAppearance.AppCompat.Caption"
                         android:textColor="?android:textColorPrimary" />
                 </LinearLayout>
@@ -138,7 +138,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Location"
+                            android:text="@string/location_label"
                             android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
                     </LinearLayout>
 
@@ -163,7 +163,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Depth"
+                            android:text="@string/depth_label"
                             android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
                     </LinearLayout>
 
@@ -230,7 +230,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Time"
+                            android:text="@string/time_label"
                             android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
                     </LinearLayout>
 
@@ -255,7 +255,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Distance"
+                            android:text="@string/distance_label"
                             android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
                     </LinearLayout>
 
