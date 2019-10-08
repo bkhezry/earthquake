@@ -6,7 +6,7 @@ apply plugin: 'kotlin-android-extensions'
 
 apply plugin: 'kotlin-kapt'
 
-def isRelease = false
+def isRelease = true
 
 File googleServicesFile = rootProject.file("app/google-services.json")
 if (googleServicesFile.exists() && isRelease) {
@@ -17,7 +17,7 @@ if (googleServicesFile.exists() && isRelease) {
 
 def versionMajor = 1
 def versionMinor = 3
-def versionPatch = 0
+def versionPatch = 1
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
@@ -31,7 +31,7 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         debug {
