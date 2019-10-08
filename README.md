@@ -1,5 +1,7 @@
 # Earthquake App
 
+[![Build Status](https://travis-ci.org/bkhezry/earthquake.svg?branch=master)](https://travis-ci.org/bkhezry/earthquake)
+
 <p align="center"><img src="assets/screenshot-1.png" /></p>
 
 **Requirements**
