@@ -132,7 +132,6 @@
                 style="@style/CustomChipChoice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/colorPrimary"
                 android:text="@string/m4_5_earthquakes_label"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
                 app:chipStrokeColor="@color/md_grey_300"
