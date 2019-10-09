@@ -1,6 +1,7 @@
 # Earthquake App
 
 [![Build Status](https://travis-ci.org/bkhezry/earthquake.svg?branch=master)](https://travis-ci.org/bkhezry/earthquake)
+[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Earthquake%20App-brightgreen.svg?style=flat)](https://android-arsenal.com/details/3/7911)
 
 <p align="center"><img src="assets/screenshot-1.png" /></p>
 
