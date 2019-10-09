@@ -50,6 +50,35 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
+/**
+ * Main activity class for showing data of earthquakes on the Google map
+ *
+ * @property bar BottomAppBar
+ * @property coordinatorLayout CoordinatorLayout
+ * @property boundFab FloatingActionButton
+ * @property recyclerView GravitySnapRecyclerView
+ * @property chipGroup1 ChipGroup
+ * @property chipGroup2 ChipGroup
+ * @property progressBar ProgressBar
+ * @property filterNameTextView TextView
+ * @property recordCountTextView TextView
+ * @property toggleInfoButton ImageButton
+ * @property expandLayout LinearLayout
+ * @property nightModeSwitch SwitchCompat
+ * @property mMap GoogleMap
+ * @property grayScaleStyle MapStyleOptions the gray style of map
+ * @property darkScaleStyle MapStyleOptions the dark style of map
+ * @property apiService ApiService
+ * @property disposable CompositeDisposable
+ * @property mClusterManager ClusterManager<Feature> the cluster manager for showing marker cluster
+ * @property mEarthquakeResponse EarthquakeResponse the response of server for earthquakes
+ * @property itemAdapter ItemAdapter<Feature> the ItemAdapter for handle feature items
+ * @property fastAdapter FastAdapter<Feature> the FastAdapter for using in the recycler view
+ * @property customRenderer CustomRenderer the custom renderer instance for handle markers of cluster
+ * @property bottomSheetFilterBehavior BottomSheetBehavior<View> the bottom sheet behavior
+ * @property bottomSheetAboutBehavior BottomSheetBehavior<View> the bottom sheet behavior
+ * @property sharedPreferencesUtil SharedPreferencesUtil the instance of shared preferences
+ */
 
 class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
@@ -104,6 +133,11 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     initMap()
   }
 
+  /**
+   * Setup recycler view with the adapter of it
+   * handle recycler view animation
+   * set recycler view item click listener
+   */
   private fun setupRecyclerView() {
     fastAdapter = FastAdapter.with(itemAdapter)
     fastAdapter.getSelectExtension().apply {
@@ -149,6 +183,10 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
       }
   }
 
+  /**
+   * Setup variables value
+   * Create instance of variables
+   */
   private fun initVariables() {
     val params: (ViewGroup.MarginLayoutParams) =
       boundFab.layoutParams as ViewGroup.MarginLayoutParams
@@ -174,6 +212,9 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
       )]
   }
 
+  /**
+   * Setup map styles
+   */
   private fun initMap() {
     val mapFragment = supportFragmentManager
       .findFragmentById(R.id.map) as SupportMapFragment
@@ -182,6 +223,9 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     mapFragment.getMapAsync(this)
   }
 
+  /**
+   * setup bottom drawer behavior
+   */
   private fun setupBottomDrawer() {
     bar.setNavigationOnClickListener {
       bottomSheetAboutBehavior.state = BottomSheetBehavior.STATE_EXPANDED
@@ -189,6 +233,10 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     bar.setNavigationIcon(R.drawable.ic_menu_black_24dp)
   }
 
+  /**
+   * Setup about bottom sheet values.
+   * set values to TextViews. set theme of app
+   */
   private fun setupAboutBottomSheet() {
     nightModeSwitch.isChecked = sharedPreferencesUtil.isDarkThemeEnabled
     nightModeSwitch.setOnCheckedChangeListener { _, isChecked ->
@@ -224,6 +272,9 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     AppUtil.setTextWithLinks(textView, AppUtil.fromHtml(htmlText))
   }
 
+  /**
+   * Setup bottom sheet behavior of about & filter sheet
+   */
   private fun setUpBottomSheet() {
     val filterBottomSheet = coordinatorLayout.findViewById(R.id.bottom_sheet) as View
     val aboutBottomSheet = coordinatorLayout.findViewById(R.id.bottom_sheet_about) as View
@@ -233,6 +284,11 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     bottomSheetAboutBehavior.state = BottomSheetBehavior.STATE_HIDDEN
   }
 
+  /**
+   * Handle google map event listener
+   *
+   * @param googleMap GoogleMap
+   */
   override fun onMapReady(googleMap: GoogleMap) {
     mMap = googleMap
     setupMapSettings()
@@ -255,6 +311,9 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     }
   }
 
+  /**
+   * Show recycler view with animation
+   */
   private fun showRecyclerView() {
     recyclerView.animate()
       .translationY(0f)
@@ -291,6 +350,9 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
       })
   }
 
+  /**
+   * Hide recycler view with animation
+   */
   private fun hideRecyclerView() {
     recyclerView.animate()
       .translationY(recyclerView.height.toFloat())
@@ -327,6 +389,10 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
       })
   }
 
+  /**
+   * Setup cluster manager
+   * add cluster & cluster item click listener
+   */
   private fun setupClusterManager() {
     mClusterManager = ClusterManager(this, mMap)
     mMap.setOnCameraIdleListener(mClusterManager)
@@ -339,6 +405,10 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     mClusterManager.renderer = customRenderer
   }
 
+  /**
+   * Set google map settings
+   * default coordinates & zoom with some google map settings(like disable rotation gestures)
+   */
   private fun setupMapSettings() {
     if (sharedPreferencesUtil.isDarkThemeEnabled) {
       mMap.setMapStyle(darkScaleStyle)
@@ -358,6 +428,13 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     mMap.uiSettings.isRotateGesturesEnabled = false
   }
 
+  /**
+   * Handle cluster click event
+   * bound box google map to the items of cluster
+   *
+   * @param cluster Cluster<Feature> instance of Cluster
+   * @return Boolean
+   */
   private fun handleClusterClick(cluster: Cluster<Feature>): Boolean {
     val features = arrayListOf<Feature>()
     for (item in cluster.items) {
@@ -367,6 +444,13 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     return true
   }
 
+  /**
+   * Handle cluster item click event
+   * showing EarthquakeDetailActivity with data of this item
+   *
+   * @param feature Feature instance
+   * @return Boolean
+   */
   private fun handleClusterItemClick(feature: Feature): Boolean {
     val intent = Intent(this@MainActivity, EarthquakeDetailActivity::class.java)
     intent.putExtra(Constants.EXTRA_ITEM, feature)
@@ -374,6 +458,9 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     return true
   }
 
+  /**
+   * Get earthquakes data from server
+   */
   private fun getEarthquake() {
     progressBar.visibility = View.VISIBLE
     val endpoint = Constants.END_POINTS[
@@ -388,6 +475,15 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
   }
 
+  /**
+   * Handle response of server
+   *
+   * add items of feature to recycler view
+   * add items of feature to cluster manager
+   * bound box map for showing data on the google map
+   *
+   * @param earthquakeResponse EarthquakeResponse
+   */
   private fun handleResponse(earthquakeResponse: EarthquakeResponse) {
     recordCountTextView.text = "#".plus(earthquakeResponse.metadata.count.toString())
     progressBar.visibility = View.GONE
@@ -403,6 +499,11 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
   }
 
+  /**
+   * Showing 10 items of features in the recycler view
+   *
+   * @param features List<Feature> list of features
+   */
   private fun setRecyclerViewItems(features: List<Feature>) {
     itemAdapter.clear()
     val subList = getSubList(features, 0, 10)
@@ -412,6 +513,14 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     }
   }
 
+  /**
+   * Select sub list of features item
+   *
+   * @param features List<Feature> list of features
+   * @param page Int page number
+   * @param count Int count of features
+   * @return List<Feature> sub list of features
+   */
   private fun getSubList(features: List<Feature>, page: Int, count: Int): List<Feature> {
     val fromIndex = page * count
     val toIndex = fromIndex + count
@@ -421,6 +530,11 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     return features.subList(fromIndex, toIndex)
   }
 
+  /**
+   * Bound box map to showing data on the google maps
+   *
+   * @param features List<Feature> list of features
+   */
   private fun boundBox(features: List<Feature>) {
     val builder = LatLngBounds.builder()
     var count = 0
@@ -434,11 +548,19 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     }
   }
 
+  /**
+   * Handle error during get earthquakes from server
+   *
+   * @param error Throwable
+   */
   private fun handleError(error: Throwable) {
     progressBar.visibility = View.GONE
     error.printStackTrace()
   }
 
+  /**
+   * bound map base on the all features data
+   */
   @OnClick(R.id.bound_fab)
   fun bound() {
     Handler().postDelayed({
@@ -447,11 +569,17 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
   }
 
+  /**
+   * Show the filter bottom sheet
+   */
   @OnClick(R.id.filter_button)
   fun filter() {
     expandBottomSheet()
   }
 
+  /**
+   * set selected time & scale as filter for get earthquakes data
+   */
   @OnClick(R.id.filter_done_button)
   fun filterDone() {
     var timeChipSelected = 0
@@ -471,6 +599,12 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     setFilter(timeChipSelected, scaleChipSelected)
   }
 
+  /**
+   * Store selected filters in the SharedPreferencesUtil
+   *
+   * @param timeChipSelected Int selected time filter
+   * @param scaleChipSelected Int selected scale filter
+   */
   private fun setFilter(timeChipSelected: Int, scaleChipSelected: Int) {
     sharedPreferencesUtil.scaleSelected = scaleChipSelected
     sharedPreferencesUtil.timeSelected = timeChipSelected
@@ -495,6 +629,10 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     disposable.dispose()
   }
 
+  /**
+   * Handle back pressed button
+   * if any bottom sheet is showing, before close app, the will be hide
+   */
   override fun onBackPressed() {
     if (bottomSheetFilterBehavior.state != BottomSheetBehavior.STATE_HIDDEN) {
       hideBottomSheet()
@@ -508,6 +646,9 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
   }
 
+  /**
+   * Toggle info layout of about bottom sheet
+   */
   @OnClick(R.id.toggle_info_layout, R.id.toggle_info_button)
   fun toggleInfoLayout() {
     val show: Boolean = toggleArrow(toggleInfoButton)
@@ -518,7 +659,12 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     }
   }
 
-
+  /**
+   * Rotate icon after click on it
+   *
+   * @param view View of arrow icon
+   * @return Boolean
+   */
   private fun toggleArrow(view: View): Boolean {
     return if (view.rotation == 0f) {
       view.animate().setDuration(200).rotation(180f)

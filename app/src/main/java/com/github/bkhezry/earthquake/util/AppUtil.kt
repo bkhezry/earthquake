@@ -28,14 +28,26 @@ import androidx.annotation.IntRange
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import com.github.bkhezry.earthquake.R
+import com.github.bkhezry.earthquake.util.AppUtil.Companion.fastOutSlowIn
 import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import kotlin.math.roundToInt
 
+/**
+ * The class for handle some useful functions
+ * @property fastOutSlowIn instance of Interpolator
+ */
 
 class AppUtil {
   companion object {
     private lateinit var fastOutSlowIn: Interpolator
+
+    /**
+     * Calculate height of actionbar
+     *
+     * @param context Context instance of application context
+     * @return Int height of action bar
+     */
     fun getActionBarHeight(context: Context): Int {
       var actionBarHeight = 0
       val tv = TypedValue()
@@ -47,6 +59,12 @@ class AppUtil {
       return actionBarHeight
     }
 
+    /**
+     * Calculate pixel of dp value
+     *
+     * @param dp Float value of dp
+     * @return Int pixel of dp value
+     */
     fun dpToPx(dp: Float): Int {
       return TypedValue.applyDimension(
         TypedValue.COMPLEX_UNIT_DIP,
@@ -54,6 +72,9 @@ class AppUtil {
       ).roundToInt()
     }
 
+    /**
+     * Vibrate device for 10 ms
+     */
     fun vibrate() {
       val vibrator =
         MyApplication.applicationContext().getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
@@ -69,6 +90,13 @@ class AppUtil {
       }
     }
 
+    /**
+     * Create custom marker base on the mag value and
+     * custom design of earthquake_marker layout
+     *
+     * @param mag String value of earthquake mag
+     * @return BitmapDescriptor instance of BitmapDescriptor
+     */
     fun setEarthquakeMarker(mag: String): BitmapDescriptor {
       val bitmap: Bitmap
       val heroMarkerView =
@@ -92,6 +120,12 @@ class AppUtil {
       return BitmapDescriptorFactory.fromBitmap(bitmap)
     }
 
+    /**
+     * Generate bitmap instance from view with custom measures
+     *
+     * @param view View instance of view
+     * @return Bitmap generated bitmap from view
+     */
     private fun createBitmapFromView(view: View): Bitmap {
       view.measure(
         View.MeasureSpec.makeMeasureSpec(
@@ -111,6 +145,11 @@ class AppUtil {
       return bitmap
     }
 
+    /**
+     * Create fast out show in animation
+     *
+     * @return Interpolator instance of animation interpolator
+     */
     fun getFastOutSlowInInterpolator(): Interpolator {
       fastOutSlowIn = AnimationUtils.loadInterpolator(
         MyApplication.applicationContext(),
@@ -143,6 +182,12 @@ class AppUtil {
       return !canMove || dm.widthPixels < dm.heightPixels
     }
 
+    /**
+     * Set string on text view with support link in it
+     *
+     * @param textView TextView instance of text view
+     * @param html CharSequence? String of text view
+     */
     @SuppressLint("ClickableViewAccessibility")
     fun setTextWithLinks(textView: TextView, html: CharSequence?) {
       textView.text = html
@@ -178,6 +223,12 @@ class AppUtil {
       })
     }
 
+    /**
+     * Create html from string
+     *
+     * @param htmlText String
+     * @return CharSequence?
+     */
     fun fromHtml(htmlText: String): CharSequence? {
       if (TextUtils.isEmpty(htmlText)) {
         return null

@@ -26,7 +26,21 @@ import com.google.android.gms.maps.model.MarkerOptions
 import java.text.SimpleDateFormat
 import java.util.*
 
-
+/**
+ * The class for showing earthquake details in the Activity
+ *
+ * @property feature Feature data of earthquake
+ * @property mMap GoogleMap instance of google map
+ * @property grayScaleStyle MapStyleOptions theme of map
+ * @property darkScaleStyle MapStyleOptions theme of map
+ * @property countryTextView TextView for showing country name
+ * @property magTextView TextView for showing mag of earthquake
+ * @property cityTextView TextView for showing city name
+ * @property coordinatesTextView TextView for showing coordinates
+ * @property depthTextView TextView for showing depth
+ * @property dateTimeTextView TextView for showing date
+ * @property distanceTextView TextView for showing distance
+ */
 class EarthquakeDetailActivity : AppCompatActivity(), OnMapReadyCallback {
 
 
@@ -59,6 +73,9 @@ class EarthquakeDetailActivity : AppCompatActivity(), OnMapReadyCallback {
     setupDismissLayout()
   }
 
+  /**
+   * Set variables value in the TextViews
+   */
   private fun initVariables() {
     feature = intent.getParcelableExtra<Parcelable>(Constants.EXTRA_ITEM) as Feature
     val placeArray = feature.properties.place.split(",")
@@ -89,6 +106,9 @@ class EarthquakeDetailActivity : AppCompatActivity(), OnMapReadyCallback {
     distanceTextView.text = placeArray[0]
   }
 
+  /**
+   * Setup google map styles
+   */
   private fun setupMap() {
     val mapFragment = supportFragmentManager
       .findFragmentById(R.id.map) as SupportMapFragment
@@ -96,6 +116,10 @@ class EarthquakeDetailActivity : AppCompatActivity(), OnMapReadyCallback {
     darkScaleStyle = MapStyleOptions.loadRawResourceStyle(this, R.raw.mapstyle_dark)
     mapFragment.getMapAsync(this)
   }
+
+  /**
+   * Setup dismiss layout feature
+   */
 
   private fun setupDismissLayout() {
     val dismissFrameLayout =
@@ -114,6 +138,12 @@ class EarthquakeDetailActivity : AppCompatActivity(), OnMapReadyCallback {
     setupMapSettings()
   }
 
+  /**
+   * Set map settings
+   * set coordinates of earthquake in the map
+   * create marker of earthquake
+   * set some settings in the settings of google map(like disable rotation & scroll gestures)
+   */
   private fun setupMapSettings() {
     val latLng = LatLng(
       feature.geometry.coordinates[1],
@@ -138,6 +168,9 @@ class EarthquakeDetailActivity : AppCompatActivity(), OnMapReadyCallback {
     mMap.uiSettings.isScrollGesturesEnabled = false
   }
 
+  /**
+   * Show earthquake details in the custom tab browser
+   */
   @OnClick(R.id.detail_button)
   fun browseDetail() {
     val builder = CustomTabsIntent.Builder()

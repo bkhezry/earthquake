@@ -54,10 +54,25 @@ data class Feature(
     return ""
   }
 
+  /**
+   * Get coordinates of feature as LatLng
+   *
+   * @return LatLng
+   */
   override fun getPosition(): LatLng {
     return LatLng(geometry.coordinates[1], geometry.coordinates[0])
   }
 
+  /**
+   * Handle view of Feature items
+   *
+   * @property view MaterialCardView
+   * @property infoButton ImageButton
+   * @property title TextView for showing title of earthquake
+   * @property mag TextView for showing mag of earthquake
+   * @property date TextView for showing date of earthquake
+   * @constructor
+   */
   class ViewHolder(view: View) : FastAdapter.ViewHolder<Feature>(view) {
     val view: MaterialCardView = view as MaterialCardView
     var infoButton: ImageButton = view.findViewById(R.id.info_button)
@@ -104,6 +119,13 @@ data class Feature(
     }
   }
 
+  /**
+   * Handle click on the feature item buttons
+   * return selected item with position of it with the CardClickListener interface
+   *
+   * @property listener CardClickListener
+   * @constructor
+   */
   class InfoFabClickEvent(cardClickListener: CardClickListener) : ClickEventHook<Feature>() {
     private var listener: CardClickListener = cardClickListener
     override fun onBind(viewHolder: RecyclerView.ViewHolder): View? {
