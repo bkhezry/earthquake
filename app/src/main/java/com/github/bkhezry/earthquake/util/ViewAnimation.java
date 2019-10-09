@@ -7,6 +7,11 @@ import android.view.animation.Transformation;
 
 public class ViewAnimation {
 
+  /**
+   * Expand the view with animation
+   *
+   * @param v {@link View}
+   */
   public static void expand(final View v) {
     int matchParentMeasureSpec = View.MeasureSpec.makeMeasureSpec(((View) v.getParent()).getWidth(), View.MeasureSpec.EXACTLY);
     int wrapContentMeasureSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
@@ -36,6 +41,11 @@ public class ViewAnimation {
     v.startAnimation(a);
   }
 
+  /**
+   * Collapse the view with animation
+   *
+   * @param v {@link View}
+   */
   public static void collapse(final View v) {
     final int initialHeight = v.getMeasuredHeight();
 
