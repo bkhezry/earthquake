@@ -6,6 +6,8 @@ apply plugin: 'kotlin-android-extensions'
 
 apply plugin: 'kotlin-kapt'
 
+apply plugin: 'org.jetbrains.dokka-android'
+
 def isRelease = true
 
 File googleServicesFile = rootProject.file("app/google-services.json")
@@ -52,6 +54,10 @@ android {
     }
     androidExtensions {
         experimental = true
+    }
+    dokka {
+        outputFormat = 'html'
+        outputDirectory = "$buildDir/javadoc"
     }
 }
 
