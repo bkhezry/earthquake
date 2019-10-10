@@ -245,7 +245,7 @@ public class ElasticDragDismissFrameLayout extends FrameLayout {
 
   /**
    * An {@link ElasticDragDismissCallback} which fades system chrome (i.e. status bar and
-   * navigation bar) whilst elastic drags are performed and
+   * appbar_menu bar) whilst elastic drags are performed and
    * {@link Activity#finishAfterTransition() finishes} the activity when drag dismissed.
    */
   public static class SystemChromeFader extends ElasticDragDismissCallback {
@@ -276,7 +276,7 @@ public class ElasticDragDismissFrameLayout extends FrameLayout {
         activity.getWindow().setNavigationBarColor(AppUtil.Companion.modifyAlpha(
             activity.getWindow().getNavigationBarColor(), navBarAlpha));
       } else if (fadeNavBar) {
-        // dragging upward, fade the navigation bar in proportion
+        // dragging upward, fade the appbar_menu bar in proportion
         activity.getWindow().setNavigationBarColor(
             AppUtil.Companion.modifyAlpha(activity.getWindow().getNavigationBarColor(),
                 (int) ((1f - rawOffset) * navBarAlpha)));
