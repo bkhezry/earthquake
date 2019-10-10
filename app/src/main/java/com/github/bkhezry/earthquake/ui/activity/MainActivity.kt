@@ -463,7 +463,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     if (NetworkUtils.isConnected()) {
       requestEarthquakes()
     } else {
-      Toast.makeText(this, "No internet access!", Toast.LENGTH_LONG).show()
+      Toast.makeText(this, getString(R.string.no_internet_message), Toast.LENGTH_LONG).show()
     }
   }
 
