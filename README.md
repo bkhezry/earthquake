@@ -10,7 +10,7 @@
 - JDK 8
 - Android SDK 29
 - Supports API Level +21
-- Material Components 1.1.0-alpha10
+- Material Components 1.1.0-beta01
 
 **Highlights**
 - Use [USGS Earthquake] API
