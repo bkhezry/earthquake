@@ -92,6 +92,7 @@ dependencies {
     implementation 'com.github.rubensousa:gravitysnaphelper:2.2.0'
 
     implementation 'androidx.browser:browser:1.0.0'
+    implementation 'com.blankj:utilcodex:1.25.9'
 
     if (isRelease) {
         implementation 'com.google.firebase:firebase-analytics:17.2.0'
