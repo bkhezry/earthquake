@@ -122,7 +122,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_main)
     ButterKnife.bind(this)
-    setSupportActionBar(bar)
     setUpBottomSheet()
     setupBottomDrawer()
     initVariables()
@@ -229,6 +228,16 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
       bottomSheetAboutBehavior.state = BottomSheetBehavior.STATE_EXPANDED
     }
     bar.setNavigationIcon(R.drawable.ic_menu_black_24dp)
+    bar.replaceMenu(R.menu.appbar_menu)
+    bar.setOnMenuItemClickListener { item ->
+      when (item.itemId) {
+        R.id.refresh -> {
+          getEarthquake()
+          true
+        }
+        else -> false
+      }
+    }
   }
 
   /**

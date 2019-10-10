@@ -171,7 +171,7 @@ class AppUtil {
     }
 
     /**
-     * Determine if the navigation bar will be on the bottom of the screen, based on logic in
+     * Determine if the appbar_menu bar will be on the bottom of the screen, based on logic in
      * PhoneWindowManager.
      */
     fun isNavBarOnBottom(): Boolean {
