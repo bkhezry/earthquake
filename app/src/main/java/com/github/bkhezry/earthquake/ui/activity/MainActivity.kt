@@ -112,7 +112,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
   private lateinit var apiService: ApiService
   private val disposable = CompositeDisposable()
   private lateinit var mClusterManager: ClusterManager<Feature>
-  private lateinit var mEarthquakeResponse: EarthquakeResponse
+  private var mEarthquakeResponse: EarthquakeResponse? = null
   private val itemAdapter = ItemAdapter<Feature>()
   private lateinit var fastAdapter: FastAdapter<Feature>
   private lateinit var customRenderer: CustomRenderer
@@ -564,7 +564,9 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
   @OnClick(R.id.bound_fab)
   fun bound() {
     Handler().postDelayed({
-      boundBox(mEarthquakeResponse.features)
+      mEarthquakeResponse?.let {
+        boundBox(it.features)
+      }
     }, 100)
 
   }

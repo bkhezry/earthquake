@@ -91,3 +91,4 @@ gen-external-apklibs
 output.json
 
 # End of https://www.gitignore.io/api/android
+/.idea/
