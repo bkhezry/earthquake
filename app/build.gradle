@@ -93,6 +93,7 @@ dependencies {
 
     implementation 'androidx.browser:browser:1.0.0'
     implementation 'com.blankj:utilcodex:1.25.9'
+    implementation "androidx.preference:preference-ktx:1.1.0"
 
     if (isRelease) {
         implementation 'com.google.firebase:firebase-analytics:17.2.0'
