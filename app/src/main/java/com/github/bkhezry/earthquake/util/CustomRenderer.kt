@@ -22,7 +22,7 @@ class CustomRenderer(context: Context, map: GoogleMap, clusterManager: ClusterMa
    * Create custom marker for each cluster item with value of mag
    *
    * @param item Feature instance of feature
-   * @param markerOptions MarkerOptions generated marker options
+   * @param markerOptions instance of [MarkerOptions] generated marker options
    */
   override fun onBeforeClusterItemRendered(item: Feature?, markerOptions: MarkerOptions?) {
     super.onBeforeClusterItemRendered(item, markerOptions)

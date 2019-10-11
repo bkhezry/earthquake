@@ -25,7 +25,7 @@ private constructor(context: Context) {
   /**
    * Set Selected item of time filter
    *
-   * @param timeSelected int selected time filter
+   * @param timeSelected Int selected time filter
    */
   var timeSelected: Int
     get() = prefs.getInt(Constants.TIME_SELECTED, 2)
@@ -40,7 +40,7 @@ private constructor(context: Context) {
   /**
    * Set Selected item of scale filter
    *
-   * @param scaleSelected int selected scale filter
+   * @param scaleSelected Int selected scale filter
    */
   var scaleSelected: Int
     get() = prefs.getInt(Constants.SCALE_SELECTED, 3)
@@ -54,7 +54,7 @@ private constructor(context: Context) {
   /**
    * Set status of dark theme
    *
-   * @param state boolean
+   * @param state Boolean
    */
   var isDarkThemeEnabled: Boolean
     get() = prefs.getBoolean(Constants.DARK_THEME, false)
@@ -64,7 +64,7 @@ private constructor(context: Context) {
     private var instance: SharedPreferencesUtil? = null
 
     /**
-     * Get static value of haredPreferencesUtil class
+     * Get static value of [SharedPreferencesUtil] class
      *
      * @param context [Context]
      * @return sharedPreferences instance of [SharedPreferencesUtil]

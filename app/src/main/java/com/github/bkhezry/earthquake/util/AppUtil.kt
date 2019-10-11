@@ -35,7 +35,7 @@ import kotlin.math.roundToInt
 
 /**
  * The class for handle some useful functions
- * @property fastOutSlowIn instance of Interpolator
+ * @property fastOutSlowIn instance of [Interpolator]
  */
 
 class AppUtil {
@@ -95,7 +95,7 @@ class AppUtil {
      * custom design of earthquake_marker layout
      *
      * @param mag String value of earthquake mag
-     * @return BitmapDescriptor instance of BitmapDescriptor
+     * @return BitmapDescriptor instance of [BitmapDescriptor]
      */
     fun setEarthquakeMarker(mag: String): BitmapDescriptor {
       val bitmap: Bitmap
@@ -148,7 +148,7 @@ class AppUtil {
     /**
      * Create fast out show in animation
      *
-     * @return Interpolator instance of animation interpolator
+     * @return interpolator instance of animation [Interpolator]
      */
     fun getFastOutSlowInInterpolator(): Interpolator {
       fastOutSlowIn = AnimationUtils.loadInterpolator(

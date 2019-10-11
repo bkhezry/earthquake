@@ -12,8 +12,8 @@ import java.util.concurrent.TimeUnit
 
 /**
  *  A class for handle retrofit
- *  @property retrofit the instance of Retrofit class
- *  @property okHttpClient the instance of OkHttpClient class
+ *  @property retrofit the instance of [Retrofit] class
+ *  @property okHttpClient the instance of [OkHttpClient] class
  *  @property REQUEST_TIMEOUT the constant value for request timeout
  */
 class ApiClient {

@@ -294,7 +294,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
   /**
    * Handle google map event listener
    *
-   * @param googleMap GoogleMap
+   * @param googleMap [GoogleMap]
    */
   override fun onMapReady(googleMap: GoogleMap) {
     mMap = googleMap
@@ -439,7 +439,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
    * Handle cluster click event
    * bound box google map to the items of cluster
    *
-   * @param cluster Cluster<Feature> instance of Cluster
+   * @param cluster Cluster<Feature> instance of [Cluster]
    * @return Boolean
    */
   private fun handleClusterClick(cluster: Cluster<Feature>): Boolean {
@@ -496,7 +496,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
    * add items of feature to cluster manager
    * bound box map for showing data on the google map
    *
-   * @param earthquakeResponse EarthquakeResponse
+   * @param earthquakeResponse the instance of [EarthquakeResponse]
    */
   private fun handleResponse(earthquakeResponse: EarthquakeResponse) {
     recordCountTextView.text = "#".plus(earthquakeResponse.metadata.count.toString())
@@ -616,7 +616,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
   }
 
   /**
-   * Store selected filters in the SharedPreferencesUtil
+   * Store selected filters in the [SharedPreferencesUtil]
    *
    * @param timeChipSelected Int selected time filter
    * @param scaleChipSelected Int selected scale filter

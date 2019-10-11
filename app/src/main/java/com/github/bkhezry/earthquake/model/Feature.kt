@@ -123,7 +123,7 @@ data class Feature(
    * Handle click on the feature item buttons
    * return selected item with position of it with the CardClickListener interface
    *
-   * @property listener CardClickListener
+   * @property listener [CardClickListener]
    * @constructor
    */
   class InfoFabClickEvent(cardClickListener: CardClickListener) : ClickEventHook<Feature>() {
