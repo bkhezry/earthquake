@@ -21,7 +21,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".ui.activity.EarthquakeDetailActivity"
-            android:screenOrientation="portrait"
+            android:screenOrientation="unspecified"
             android:theme="@style/TransitionTheme"></activity>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
