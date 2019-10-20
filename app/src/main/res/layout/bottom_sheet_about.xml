@@ -26,7 +26,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/spacing_medium"
             android:layout_marginBottom="@dimen/spacing_medium"
-            android:background="@drawable/bottom_sheet_indicator"/>
+            android:background="@drawable/bottom_sheet_indicator" />
 
         <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/night_mode_switch"
