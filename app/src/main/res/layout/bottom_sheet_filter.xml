@@ -19,6 +19,14 @@
         android:layout_margin="@dimen/spacing_medium"
         android:orientation="vertical">
 
+        <View
+            android:layout_width="20dp"
+            android:layout_height="5dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/spacing_medium"
+            android:layout_marginBottom="@dimen/spacing_medium"
+            android:background="@drawable/bottom_sheet_indicator"/>
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
