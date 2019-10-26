@@ -67,14 +67,12 @@
         android:indeterminateTintMode="src_atop"
         android:visibility="gone" />
 
-    <com.github.rubensousa.gravitysnaphelper.GravitySnapRecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="160dp"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="@dimen/spacing_mmlarge"
         android:orientation="horizontal"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        app:snapGravity="start"
-        app:snapToPadding="false" />
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 </RelativeLayout>

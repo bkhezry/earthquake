@@ -14,6 +14,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.util.Pair
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import butterknife.BindView
 import butterknife.ButterKnife
@@ -25,7 +26,6 @@ import com.github.bkhezry.earthquake.model.EarthquakeResponse
 import com.github.bkhezry.earthquake.model.Feature
 import com.github.bkhezry.earthquake.service.ApiService
 import com.github.bkhezry.earthquake.util.*
-import com.github.rubensousa.gravitysnaphelper.GravitySnapRecyclerView
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -87,7 +87,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
   @BindView(R.id.bound_fab)
   lateinit var boundFab: FloatingActionButton
   @BindView(R.id.recycler_view)
-  lateinit var recyclerView: GravitySnapRecyclerView
+  lateinit var recyclerView: RecyclerView
   @BindView(R.id.chip_group_1)
   lateinit var chipGroup1: ChipGroup
   @BindView(R.id.chip_group_2)
@@ -151,6 +151,10 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         orientation = RecyclerView.HORIZONTAL
       )
     )
+
+    val snapHelper =  LinearSnapHelper()
+    snapHelper.attachToRecyclerView(recyclerView)
+
     recyclerView.itemAnimator = AlphaInAnimator()
     recyclerView.itemAnimator?.apply {
       addDuration = 500
