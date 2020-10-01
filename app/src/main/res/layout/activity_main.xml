@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <include layout="@layout/content_main" />
+        <include android:id="@+id/main_content" layout="@layout/content_main" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/bound_fab"
@@ -51,10 +51,10 @@
             app:layout_anchor="@id/bar" />
 
         <!-- include bottom sheet filter-->
-        <include layout="@layout/bottom_sheet_filter" />
+        <include android:id="@+id/bottom_sheet_filter" layout="@layout/bottom_sheet_filter" />
 
         <!-- include bottom sheet about-->
-        <include layout="@layout/bottom_sheet_about" />
+        <include android:id="@+id/bottom_sheet_about" layout="@layout/bottom_sheet_about" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 

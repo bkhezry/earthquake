@@ -6,21 +6,20 @@ import android.os.Bundle
 import android.os.Handler
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.appcompat.widget.SwitchCompat
-import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.util.Pair
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
-import butterknife.BindView
-import butterknife.ButterKnife
-import butterknife.OnClick
 import com.blankj.utilcode.util.NetworkUtils
 import com.github.bkhezry.earthquake.R
+import com.github.bkhezry.earthquake.databinding.ActivityMainBinding
 import com.github.bkhezry.earthquake.listener.CardClickListener
 import com.github.bkhezry.earthquake.model.EarthquakeResponse
 import com.github.bkhezry.earthquake.model.Feature
@@ -33,10 +32,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MapStyleOptions
-import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.chip.ChipGroup
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.maps.android.clustering.Cluster
 import com.google.maps.android.clustering.ClusterManager
 import com.mikepenz.fastadapter.FastAdapter
@@ -51,17 +47,6 @@ import io.reactivex.schedulers.Schedulers
 /**
  * Main activity class for showing data of earthquakes on the Google map
  *
- * @property bar BottomAppBar
- * @property coordinatorLayout CoordinatorLayout
- * @property boundFab FloatingActionButton
- * @property recyclerView GravitySnapRecyclerView
- * @property chipGroup1 ChipGroup
- * @property chipGroup2 ChipGroup
- * @property progressBar ProgressBar
- * @property filterNameTextView TextView
- * @property recordCountTextView TextView
- * @property toggleInfoButton ImageButton
- * @property expandLayout LinearLayout
  * @property nightModeSwitch SwitchCompat
  * @property mMap GoogleMap
  * @property grayScaleStyle MapStyleOptions the gray style of map
@@ -80,30 +65,6 @@ import io.reactivex.schedulers.Schedulers
 
 class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
-  @BindView(R.id.bar)
-  lateinit var bar: BottomAppBar
-  @BindView(R.id.coordinator_layout)
-  lateinit var coordinatorLayout: CoordinatorLayout
-  @BindView(R.id.bound_fab)
-  lateinit var boundFab: FloatingActionButton
-  @BindView(R.id.recycler_view)
-  lateinit var recyclerView: RecyclerView
-  @BindView(R.id.chip_group_1)
-  lateinit var chipGroup1: ChipGroup
-  @BindView(R.id.chip_group_2)
-  lateinit var chipGroup2: ChipGroup
-  @BindView(R.id.progress_bar)
-  lateinit var progressBar: ProgressBar
-  @BindView(R.id.filter_name_text_view)
-  lateinit var filterNameTextView: TextView
-  @BindView(R.id.record_count_text_view)
-  lateinit var recordCountTextView: TextView
-  @BindView(R.id.toggle_info_button)
-  lateinit var toggleInfoButton: ImageButton
-  @BindView(R.id.expand_layout)
-  lateinit var expandLayout: LinearLayout
-  @BindView(R.id.night_mode_switch)
-  lateinit var nightModeSwitch: SwitchCompat
   private lateinit var mMap: GoogleMap
   private lateinit var grayScaleStyle: MapStyleOptions
   private lateinit var darkScaleStyle: MapStyleOptions
@@ -117,14 +78,18 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
   private lateinit var bottomSheetFilterBehavior: BottomSheetBehavior<View>
   private lateinit var bottomSheetAboutBehavior: BottomSheetBehavior<View>
   private lateinit var sharedPreferencesUtil: SharedPreferencesUtil
+  private lateinit var viewBinding: ActivityMainBinding
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    setContentView(R.layout.activity_main)
-    ButterKnife.bind(this)
+
+    viewBinding = ActivityMainBinding.inflate(layoutInflater)
+    setContentView(viewBinding.root)
+
     setUpBottomSheet()
     setupBottomDrawer()
     initVariables()
+    setupViews()
     setupAboutBottomSheet()
     setupRecyclerView()
     initMap()
@@ -135,14 +100,15 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
    * handle recycler view animation
    * set recycler view item click listener
    */
-  private fun setupRecyclerView() {
+  private fun setupRecyclerView() = with(viewBinding.mainContent) {
     fastAdapter = FastAdapter.with(itemAdapter)
     fastAdapter.getSelectExtension().apply {
       isSelectable = true
       multiSelect = false
       selectOnLongClick = false
     }
-    val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+    val layoutManager =
+      LinearLayoutManager(this@MainActivity, LinearLayoutManager.HORIZONTAL, false)
     recyclerView.layoutManager = layoutManager
     recyclerView.addItemDecoration(
       LinearEdgeDecoration(
@@ -152,7 +118,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
       )
     )
 
-    val snapHelper =  LinearSnapHelper()
+    val snapHelper = LinearSnapHelper()
     snapHelper.attachToRecyclerView(recyclerView)
 
     recyclerView.itemAnimator = AlphaInAnimator()
@@ -189,28 +155,37 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
    * Create instance of variables
    */
   private fun initVariables() {
-    val params: (ViewGroup.MarginLayoutParams) =
-      boundFab.layoutParams as ViewGroup.MarginLayoutParams
-    params.bottomMargin =
-      AppUtil.getActionBarHeight(this) + AppUtil.dpToPx(135f)
     apiService = ApiClient.getClient()!!.create(ApiService::class.java)
-    sharedPreferencesUtil = SharedPreferencesUtil.getInstance(this)
-    when {
-      sharedPreferencesUtil.timeSelected == 0 -> chipGroup1.check(R.id.time_chip_0)
-      sharedPreferencesUtil.timeSelected == 1 -> chipGroup1.check(R.id.time_chip_1)
-      sharedPreferencesUtil.timeSelected == 2 -> chipGroup1.check(R.id.time_chip_2)
-      sharedPreferencesUtil.timeSelected == 3 -> chipGroup1.check(R.id.time_chip_3)
+    sharedPreferencesUtil = SharedPreferencesUtil.getInstance(this@MainActivity)
+  }
+
+  private fun setupViews() = with(viewBinding.bottomSheetFilter) {
+    val params: (ViewGroup.MarginLayoutParams) =
+      viewBinding.boundFab.layoutParams as ViewGroup.MarginLayoutParams
+    params.bottomMargin =
+      AppUtil.getActionBarHeight(this@MainActivity) + AppUtil.dpToPx(135f)
+    when (sharedPreferencesUtil.timeSelected) {
+      0 -> chipGroup1.check(R.id.time_chip_0)
+      1 -> chipGroup1.check(R.id.time_chip_1)
+      2 -> chipGroup1.check(R.id.time_chip_2)
+      3 -> chipGroup1.check(R.id.time_chip_3)
     }
-    when {
-      sharedPreferencesUtil.scaleSelected == 0 -> chipGroup2.check(R.id.scale_chip_0)
-      sharedPreferencesUtil.scaleSelected == 1 -> chipGroup2.check(R.id.scale_chip_1)
-      sharedPreferencesUtil.scaleSelected == 2 -> chipGroup2.check(R.id.scale_chip_2)
-      sharedPreferencesUtil.scaleSelected == 3 -> chipGroup2.check(R.id.scale_chip_3)
+    when (sharedPreferencesUtil.scaleSelected) {
+      0 -> chipGroup2.check(R.id.scale_chip_0)
+      1 -> chipGroup2.check(R.id.scale_chip_1)
+      2 -> chipGroup2.check(R.id.scale_chip_2)
+      3 -> chipGroup2.check(R.id.scale_chip_3)
     }
-    filterNameTextView.text =
+    viewBinding.mainContent.filterNameTextView.text =
       Constants.END_POINTS_NAME[sharedPreferencesUtil.timeSelected.toString().plus(
         sharedPreferencesUtil.scaleSelected.toString()
       )]
+
+    filterDoneButton.setOnClickListener { filterDone() }
+    viewBinding.bottomSheetAbout.toggleInfoButton.setOnClickListener { toggleInfoLayout() }
+    viewBinding.bottomSheetAbout.toggleInfoLayout.setOnClickListener { toggleInfoLayout() }
+    viewBinding.boundFab.setOnClickListener { bound() }
+    viewBinding.filterButton.setOnClickListener { filter() }
   }
 
   /**
@@ -227,7 +202,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
   /**
    * setup bottom drawer behavior
    */
-  private fun setupBottomDrawer() {
+  private fun setupBottomDrawer() = with(viewBinding) {
     bar.setNavigationOnClickListener {
       bottomSheetAboutBehavior.state = BottomSheetBehavior.STATE_EXPANDED
     }
@@ -248,7 +223,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
    * Setup about bottom sheet values.
    * set values to TextViews. set theme of app
    */
-  private fun setupAboutBottomSheet() {
+  private fun setupAboutBottomSheet() = with(viewBinding.bottomSheetAbout) {
     nightModeSwitch.isChecked = sharedPreferencesUtil.isDarkThemeEnabled
     nightModeSwitch.setOnCheckedChangeListener { _, isChecked ->
       sharedPreferencesUtil.isDarkThemeEnabled = isChecked
@@ -271,12 +246,12 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
       getString(R.string.application_info_text, versionName)
     )
     setTextWithLinks(
-      findViewById(R.id.text_developer_info),
+      textDeveloperInfo,
       getString(R.string.developer_info_text)
     )
-    setTextWithLinks(findViewById(R.id.text_design_api), getString(R.string.design_api_text))
-    setTextWithLinks(findViewById(R.id.text_libraries), getString(R.string.libraries_text))
-    setTextWithLinks(findViewById(R.id.text_license), getString(R.string.license_text))
+    setTextWithLinks(textDesignApi, getString(R.string.design_api_text))
+    setTextWithLinks(textLibraries, getString(R.string.libraries_text))
+    setTextWithLinks(textLicense, getString(R.string.license_text))
   }
 
   private fun setTextWithLinks(textView: TextView, htmlText: String) {
@@ -286,12 +261,10 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
   /**
    * Setup bottom sheet behavior of about & filter sheet
    */
-  private fun setUpBottomSheet() {
-    val filterBottomSheet = coordinatorLayout.findViewById(R.id.bottom_sheet) as View
-    val aboutBottomSheet = coordinatorLayout.findViewById(R.id.bottom_sheet_about) as View
-    bottomSheetFilterBehavior = BottomSheetBehavior.from(filterBottomSheet)
+  private fun setUpBottomSheet() = with(viewBinding) {
+    bottomSheetFilterBehavior = BottomSheetBehavior.from(bottomSheetFilter.bottomSheet)
     bottomSheetFilterBehavior.state = BottomSheetBehavior.STATE_HIDDEN
-    bottomSheetAboutBehavior = BottomSheetBehavior.from(aboutBottomSheet)
+    bottomSheetAboutBehavior = BottomSheetBehavior.from(bottomSheetAbout.bottomSheetAbout)
     bottomSheetAboutBehavior.state = BottomSheetBehavior.STATE_HIDDEN
   }
 
@@ -314,7 +287,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         bottomSheetFilterBehavior.state = BottomSheetBehavior.STATE_HIDDEN
         return@setOnMapClickListener
       }
-      if (recyclerView.visibility == View.VISIBLE) {
+      if (viewBinding.mainContent.recyclerView.isVisible) {
         hideRecyclerView()
       } else {
         showRecyclerView()
@@ -325,7 +298,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
   /**
    * Show recycler view with animation
    */
-  private fun showRecyclerView() {
+  private fun showRecyclerView() = with(viewBinding.mainContent) {
     recyclerView.animate()
       .translationY(0f)
       .alpha(1.0f)
@@ -347,7 +320,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             AppUtil.getActionBarHeight(this@MainActivity) + AppUtil.dpToPx(130f)
           )
           val params: (ViewGroup.MarginLayoutParams) =
-            boundFab.layoutParams as ViewGroup.MarginLayoutParams
+            viewBinding.boundFab.layoutParams as ViewGroup.MarginLayoutParams
           params.bottomMargin =
             AppUtil.getActionBarHeight(this@MainActivity) + AppUtil.dpToPx(135f)
           recyclerView.clearAnimation()
@@ -364,7 +337,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
   /**
    * Hide recycler view with animation
    */
-  private fun hideRecyclerView() {
+  private fun hideRecyclerView() = with(viewBinding.mainContent) {
     recyclerView.animate()
       .translationY(recyclerView.height.toFloat())
       .alpha(0.0f)
@@ -390,7 +363,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             AppUtil.getActionBarHeight(this@MainActivity) + AppUtil.dpToPx(20f)
           )
           val params: (ViewGroup.MarginLayoutParams) =
-            boundFab.layoutParams as ViewGroup.MarginLayoutParams
+            viewBinding.boundFab.layoutParams as ViewGroup.MarginLayoutParams
           params.bottomMargin =
             AppUtil.getActionBarHeight(this@MainActivity) + AppUtil.dpToPx(20f)
           recyclerView.clearAnimation()
@@ -481,11 +454,11 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
   }
 
   private fun requestEarthquakes() {
-    progressBar.visibility = View.VISIBLE
+    viewBinding.mainContent.progressBar.isVisible = true
     val endpoint = Constants.END_POINTS[
-        sharedPreferencesUtil.timeSelected.toString().plus(
-          sharedPreferencesUtil.scaleSelected.toString()
-        )].toString()
+      sharedPreferencesUtil.timeSelected.toString().plus(
+        sharedPreferencesUtil.scaleSelected.toString()
+      )].toString()
     val subscribe = apiService.getEarthquakes(endpoint)
       .subscribeOn(Schedulers.io())
       .observeOn(AndroidSchedulers.mainThread())
@@ -502,9 +475,9 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
    *
    * @param earthquakeResponse the instance of [EarthquakeResponse]
    */
-  private fun handleResponse(earthquakeResponse: EarthquakeResponse) {
-    recordCountTextView.text = "#".plus(earthquakeResponse.metadata.count.toString())
-    progressBar.visibility = View.GONE
+  private fun handleResponse(earthquakeResponse: EarthquakeResponse) = with(viewBinding) {
+    mainContent.recordCountTextView.text = "#".plus(earthquakeResponse.metadata.count.toString())
+    mainContent.progressBar.isGone = true
     mEarthquakeResponse = earthquakeResponse
     mClusterManager.clearItems()
     mClusterManager.cluster()
@@ -572,15 +545,14 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
    * @param error Throwable
    */
   private fun handleError(error: Throwable) {
-    progressBar.visibility = View.GONE
+    viewBinding.mainContent.progressBar.isGone = true
     error.printStackTrace()
   }
 
   /**
    * bound map base on the all features data
    */
-  @OnClick(R.id.bound_fab)
-  fun bound() {
+  private fun bound() {
     Handler().postDelayed({
       mEarthquakeResponse?.let {
         boundBox(it.features)
@@ -592,7 +564,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
   /**
    * Show the filter bottom sheet
    */
-  @OnClick(R.id.filter_button)
   fun filter() {
     expandBottomSheet()
   }
@@ -600,21 +571,20 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
   /**
    * set selected time & scale as filter for get earthquakes data
    */
-  @OnClick(R.id.filter_done_button)
-  fun filterDone() {
+  private fun filterDone() = with(viewBinding.bottomSheetFilter) {
     var timeChipSelected = 0
     var scaleChipSelected = 0
-    when {
-      chipGroup1.checkedChipId == R.id.time_chip_0 -> timeChipSelected = 0
-      chipGroup1.checkedChipId == R.id.time_chip_1 -> timeChipSelected = 1
-      chipGroup1.checkedChipId == R.id.time_chip_2 -> timeChipSelected = 2
-      chipGroup1.checkedChipId == R.id.time_chip_3 -> timeChipSelected = 3
+    when (chipGroup1.checkedChipId) {
+      R.id.time_chip_0 -> timeChipSelected = 0
+      R.id.time_chip_1 -> timeChipSelected = 1
+      R.id.time_chip_2 -> timeChipSelected = 2
+      R.id.time_chip_3 -> timeChipSelected = 3
     }
-    when {
-      chipGroup2.checkedChipId == R.id.scale_chip_0 -> scaleChipSelected = 0
-      chipGroup2.checkedChipId == R.id.scale_chip_1 -> scaleChipSelected = 1
-      chipGroup2.checkedChipId == R.id.scale_chip_2 -> scaleChipSelected = 2
-      chipGroup2.checkedChipId == R.id.scale_chip_3 -> scaleChipSelected = 3
+    when (chipGroup2.checkedChipId) {
+      R.id.scale_chip_0 -> scaleChipSelected = 0
+      R.id.scale_chip_1 -> scaleChipSelected = 1
+      R.id.scale_chip_2 -> scaleChipSelected = 2
+      R.id.scale_chip_3 -> scaleChipSelected = 3
     }
     setFilter(timeChipSelected, scaleChipSelected)
   }
@@ -628,7 +598,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
   private fun setFilter(timeChipSelected: Int, scaleChipSelected: Int) {
     sharedPreferencesUtil.scaleSelected = scaleChipSelected
     sharedPreferencesUtil.timeSelected = timeChipSelected
-    filterNameTextView.text =
+    viewBinding.mainContent.filterNameTextView.text =
       Constants.END_POINTS_NAME[sharedPreferencesUtil.timeSelected.toString().plus(
         sharedPreferencesUtil.scaleSelected.toString()
       )]
@@ -669,8 +639,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
   /**
    * Toggle info layout of about bottom sheet
    */
-  @OnClick(R.id.toggle_info_layout, R.id.toggle_info_button)
-  fun toggleInfoLayout() {
+  private fun toggleInfoLayout() = with(viewBinding.bottomSheetAbout) {
     val show: Boolean = toggleArrow(toggleInfoButton)
     if (show) {
       ViewAnimation.expand(expandLayout)

@@ -1,11 +1,7 @@
 apply plugin: 'com.android.application'
-
 apply plugin: 'kotlin-android'
-
 apply plugin: 'kotlin-android-extensions'
-
 apply plugin: 'kotlin-kapt'
-
 apply plugin: 'org.jetbrains.dokka-android'
 
 def isRelease = false
@@ -30,6 +26,9 @@ android {
         versionCode versionMajor * 10000 + versionMinor * 100 + versionPatch
         versionName "${versionMajor}.${versionMinor}.${versionPatch}"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+    buildFeatures {
+        viewBinding = true
     }
     buildTypes {
         release {
@@ -81,9 +80,6 @@ dependencies {
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
 
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.6.2'
-
-    implementation 'com.jakewharton:butterknife:10.2.0'
-    kapt 'com.jakewharton:butterknife-compiler:10.2.0'
 
     implementation 'com.google.maps.android:android-maps-utils:0.6.1'
     implementation 'com.mikepenz:fastadapter:4.1.0-b02'
