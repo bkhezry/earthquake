@@ -34,6 +34,9 @@
 - [Firebase Core] / Crashlytics
 - [ButterKnife]: Bind Android views and callbacks to fields and methods.
 
+### Development Setup
+Before you start, make sure that you have added your Google Maps API key by following the instructions in `app/src/debug/res/values/google_maps_api.xml`
+
 **Credit**
 
 ### [Freepik] Icon Designer 
@@ -53,10 +56,10 @@
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
     See the License for the specific language governing permissions and
     limitations under the License.
-    
+
 [android-maps-utils]: https://github.com/googlemaps/android-maps-utils
 [GravitySnapHelper]: https://github.com/rubensousa/GravitySnapHelper
-[freepik]: https://www.flaticon.com/authors/freepik    
+[freepik]: https://www.flaticon.com/authors/freepik
 [USGS Earthquake]: https://earthquake.usgs.gov/earthquakes/feed/v1.0/geojson.php
 [Support libraries]: https://developer.android.com/jetpack/androidx/
 [Material Design 2]: https://material.io/develop/android/
