@@ -4,13 +4,10 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
 import android.view.View
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.browser.customtabs.CustomTabsIntent
-import butterknife.BindView
-import butterknife.ButterKnife
-import butterknife.OnClick
 import com.github.bkhezry.earthquake.R
+import com.github.bkhezry.earthquake.databinding.ActivityEarthquakeDetailBinding
 import com.github.bkhezry.earthquake.model.Feature
 import com.github.bkhezry.earthquake.util.AppUtil
 import com.github.bkhezry.earthquake.util.Constants
@@ -33,42 +30,22 @@ import java.util.*
  * @property mMap GoogleMap instance of google map
  * @property grayScaleStyle MapStyleOptions theme of map
  * @property darkScaleStyle MapStyleOptions theme of map
- * @property countryTextView TextView for showing country name
- * @property magTextView TextView for showing mag of earthquake
- * @property cityTextView TextView for showing city name
- * @property coordinatesTextView TextView for showing coordinates
- * @property depthTextView TextView for showing depth
- * @property dateTimeTextView TextView for showing date
- * @property distanceTextView TextView for showing distance
  */
 class EarthquakeDetailActivity : AppCompatActivity(), OnMapReadyCallback {
-
 
   private lateinit var feature: Feature
   private lateinit var mMap: GoogleMap
   private lateinit var grayScaleStyle: MapStyleOptions
   private lateinit var darkScaleStyle: MapStyleOptions
-  @BindView(R.id.country_text_view)
-  lateinit var countryTextView: TextView
-  @BindView(R.id.mag_text_view)
-  lateinit var magTextView: TextView
-  @BindView(R.id.city_text_view)
-  lateinit var cityTextView: TextView
-  @BindView(R.id.coordinates_text_view)
-  lateinit var coordinatesTextView: TextView
-  @BindView(R.id.depth_text_view)
-  lateinit var depthTextView: TextView
-  @BindView(R.id.date_time_text_view)
-  lateinit var dateTimeTextView: TextView
-  @BindView(R.id.distance_text_view)
-  lateinit var distanceTextView: TextView
-
+  private lateinit var viewBinding: ActivityEarthquakeDetailBinding
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    setContentView(R.layout.activity_earthquake_detail)
-    ButterKnife.bind(this)
-    initVariables()
+
+    viewBinding = ActivityEarthquakeDetailBinding.inflate(layoutInflater)
+    setContentView(viewBinding.root)
+
+    initViews()
     setupMap()
     setupDismissLayout()
   }
@@ -76,7 +53,7 @@ class EarthquakeDetailActivity : AppCompatActivity(), OnMapReadyCallback {
   /**
    * Set variables value in the TextViews
    */
-  private fun initVariables() {
+  private fun initViews() = with(viewBinding) {
     feature = intent.getParcelableExtra<Parcelable>(Constants.EXTRA_ITEM) as Feature
     val placeArray = feature.properties.place.split(",")
     val placeArraySplit = placeArray[0].split("of")
@@ -104,14 +81,14 @@ class EarthquakeDetailActivity : AppCompatActivity(), OnMapReadyCallback {
     calendar.timeInMillis = feature.properties.time
     dateTimeTextView.text = format.format(calendar.time)
     distanceTextView.text = placeArray[0]
+    detailButton.setOnClickListener { browseDetail() }
   }
 
   /**
    * Setup google map styles
    */
   private fun setupMap() {
-    val mapFragment = supportFragmentManager
-      .findFragmentById(R.id.map) as SupportMapFragment
+    val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
     grayScaleStyle = MapStyleOptions.loadRawResourceStyle(this, R.raw.mapstyle_grayscale)
     darkScaleStyle = MapStyleOptions.loadRawResourceStyle(this, R.raw.mapstyle_dark)
     mapFragment.getMapAsync(this)
@@ -124,8 +101,7 @@ class EarthquakeDetailActivity : AppCompatActivity(), OnMapReadyCallback {
   private fun setupDismissLayout() {
     val dismissFrameLayout =
       findViewById<View>(R.id.draggable_frame) as ElasticDragDismissFrameLayout
-    dismissFrameLayout.addListener(object :
-      ElasticDragDismissFrameLayout.SystemChromeFader(this) {
+    dismissFrameLayout.addListener(object : ElasticDragDismissFrameLayout.SystemChromeFader(this) {
       override fun onDragDismissed() {
         super.onDragDismissed()
         finishAfterTransition()
@@ -160,7 +136,14 @@ class EarthquakeDetailActivity : AppCompatActivity(), OnMapReadyCallback {
       )
     )
     val markerOptions = MarkerOptions()
-    markerOptions.icon(AppUtil.setEarthquakeMarker(String.format("M %.1f", feature.properties.mag)))
+    markerOptions.icon(
+      AppUtil.setEarthquakeMarker(
+        String.format(
+          "M %.1f",
+          feature.properties.mag
+        )
+      )
+    )
     markerOptions.position(latLng)
     mMap.addMarker(markerOptions)
     mMap.uiSettings.isMyLocationButtonEnabled = false
@@ -171,8 +154,7 @@ class EarthquakeDetailActivity : AppCompatActivity(), OnMapReadyCallback {
   /**
    * Show earthquake details in the custom tab browser
    */
-  @OnClick(R.id.detail_button)
-  fun browseDetail() {
+  private fun browseDetail() {
     val builder = CustomTabsIntent.Builder()
     val customTabsIntent = builder.build()
     customTabsIntent.launchUrl(this, Uri.parse(feature.properties.url))
