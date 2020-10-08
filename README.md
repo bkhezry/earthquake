@@ -6,11 +6,11 @@
 <p align="center"><img src="assets/screenshot-1.png" /></p>
 
 **Requirements**
-- Android Studio 3.5.1
+- Android Studio 4.0.2
 - JDK 8
-- Android SDK 29
+- Android SDK 30
 - Supports API Level +21
-- Material Components 1.1.0-beta01
+- Material Components 1.3.0-alpha03
 
 **Highlights**
 - Use [USGS Earthquake] API
@@ -32,7 +32,6 @@
 - Square [Retrofit] / [Okhttp] / [Logging-Interceptor]
 - [RxAndroid] Reactive Extensions for Android
 - [Firebase Core] / Crashlytics
-- [ButterKnife]: Bind Android views and callbacks to fields and methods.
 
 ### Development Setup
 Before you start, make sure that you have added your Google Maps API key by following the instructions in `app/src/debug/res/values/google_maps_api.xml`
@@ -69,5 +68,4 @@ Before you start, make sure that you have added your Google Maps API key by foll
 [Logging-Interceptor]: https://github.com/square/okhttp/tree/master/okhttp-logging-interceptor
 [RxAndroid]: https://github.com/ReactiveX/RxAndroid
 [Firebase Core]: https://firebase.google.com/
-[ButterKnife]: https://github.com/JakeWharton/butterknife
 [Release]: https://github.com/bkhezry/earthquake/releases
