@@ -16,11 +16,11 @@ def versionMajor = 1
 def versionMinor = 4
 def versionPatch = 0
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
     defaultConfig {
         applicationId "com.github.bkhezry.earthquake"
         minSdkVersion 21
-        targetSdkVersion 30
+        targetSdkVersion 31
         versionCode versionMajor * 10000 + versionMinor * 100 + versionPatch
         versionName "${versionMajor}.${versionMinor}.${versionPatch}"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
