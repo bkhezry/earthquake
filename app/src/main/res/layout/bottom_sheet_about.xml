@@ -64,8 +64,8 @@
                 android:layout_width="?attr/actionBarSize"
                 android:layout_height="?attr/actionBarSize"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:tint="?android:textColorPrimary"
-                app:srcCompat="@drawable/ic_keyboard_arrow_down_black_24dp" />
+                app:srcCompat="@drawable/ic_keyboard_arrow_down_black_24dp"
+                app:tint="?android:textColorPrimary" />
 
         </LinearLayout>
 

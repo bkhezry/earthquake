@@ -50,6 +50,7 @@
             android:layout_height="10dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="-3dp"
-            android:src="@drawable/ic_action_end_marker" />
+            android:src="@drawable/ic_action_end_marker"
+            android:contentDescription="@string/marker" />
     </LinearLayout>
 </LinearLayout>

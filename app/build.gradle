@@ -7,8 +7,7 @@ apply plugin: 'org.jetbrains.dokka-android'
 def isRelease = false
 
 File googleServicesFile = rootProject.file("app/google-services.json")
-if (googleServicesFile.exists() && isRelease) {
-
+if (googleServicesFile.exists()) {
     apply plugin: 'com.google.firebase.firebase-perf'
 }
 
@@ -112,7 +111,7 @@ android.applicationVariants.all { variant ->
 kapt {
     generateStubs = true
 }
-if (googleServicesFile.exists() && isRelease) {
+if (googleServicesFile.exists()) {
     System.out.println("Google Service File Exist")
     apply plugin: 'com.google.gms.google-services'
     apply plugin: 'com.google.firebase.crashlytics'

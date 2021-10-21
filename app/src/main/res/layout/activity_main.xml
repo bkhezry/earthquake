@@ -25,7 +25,8 @@
             app:elevation="5dp"
             app:fabSize="mini"
             app:srcCompat="@drawable/ic_crop_free_black_24dp"
-            app:tint="?android:textColorPrimary" />
+            app:tint="?android:textColorPrimary"
+            android:contentDescription="@string/bound_map" />
 
         <com.google.android.material.bottomappbar.BottomAppBar
             android:id="@+id/bar"
