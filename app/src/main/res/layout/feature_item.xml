@@ -62,7 +62,8 @@
                 android:layout_gravity="end"
                 android:background="?selectableItemBackgroundBorderless"
                 app:srcCompat="@drawable/ic_launch_black_24dp"
-                app:tint="?android:textColorPrimary" />
+                app:tint="?android:textColorPrimary"
+                android:contentDescription="@string/more_info" />
 
             <View
                 android:layout_width="@dimen/spacing_medium"
