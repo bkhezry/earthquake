@@ -7,9 +7,6 @@ apply plugin: 'org.jetbrains.dokka-android'
 def isRelease = false
 
 File googleServicesFile = rootProject.file("app/google-services.json")
-if (googleServicesFile.exists()) {
-    apply plugin: 'com.google.firebase.firebase-perf'
-}
 
 def versionMajor = 1
 def versionMinor = 4
