@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "36041184676",
+    "firebase_url": "https://earthquakeusgs.firebaseio.com",
+    "project_id": "earthquakeusgs",
+    "storage_bucket": "earthquakeusgs.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:36041184676:android:d75bb5eb205b7316efdd31",
+        "android_client_info": {
+          "package_name": "com.github.bkhezry.earthquake"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "36041184676-q4rum5nju969be65bv4b4ebl61h8o51q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB0yq8oAd29XwTv258soP2K_Rr0IuWm1N0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "36041184676-q4rum5nju969be65bv4b4ebl61h8o51q.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
