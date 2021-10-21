@@ -83,4 +83,6 @@
     <string name="m4_5_earthquakes_label">M4.5+ Earthquakes</string>
     <string name="no_internet_message">No internet access!</string>
     <string name="refresh_label">Refresh</string>
+    <string name="bound_map">Bound map</string>
+    <string name="marker">marker</string>
 </resources>
