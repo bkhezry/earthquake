@@ -10,7 +10,7 @@ File googleServicesFile = rootProject.file("app/google-services.json")
 
 def versionMajor = 1
 def versionMinor = 4
-def versionPatch = 0
+def versionPatch = 4
 android {
     compileSdkVersion 31
     defaultConfig {
