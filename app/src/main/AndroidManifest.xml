@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.github.bkhezry.earthquake">
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
@@ -7,12 +8,14 @@
          location permissions for the 'MyLocation' functionality.
     -->
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission
+        android:name="android.permission.ACCESS_FINE_LOCATION"
+        tools:ignore="CoarseFineLocation" />
     <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
         android:name=".util.MyApplication"
-        android:allowBackup="true"
+        android:fullBackupContent="true"
         android:hardwareAccelerated="true"
         android:icon="@drawable/ic_earthquake"
         android:label="@string/app_name"
@@ -21,8 +24,9 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".ui.activity.EarthquakeDetailActivity"
-            android:screenOrientation="unspecified"
-            android:theme="@style/TransitionTheme"></activity>
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/TransitionTheme" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -37,6 +41,7 @@
 
         <activity
             android:name=".ui.activity.MainActivity"
+            android:exported="true"
             android:label="@string/app_name"
             android:screenOrientation="portrait">
             <intent-filter>
