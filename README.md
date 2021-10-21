@@ -1,16 +1,15 @@
 # Earthquake App
 
-[![Build Status](https://travis-ci.org/bkhezry/earthquake.svg?branch=master)](https://travis-ci.org/bkhezry/earthquake)
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Earthquake%20App-brightgreen.svg?style=flat)](https://android-arsenal.com/details/3/7911)
 
 <p align="center"><img src="assets/screenshot-1.png" /></p>
 
 **Requirements**
-- Android Studio 4.0.2
+- Android Studio latest version
 - JDK 8
-- Android SDK 30
+- Android SDK 31
 - Supports API Level +21
-- Material Components 1.3.0-alpha03
+- Material Components 1.5.0-alpha04
 
 **Highlights**
 - Use [USGS Earthquake] API
