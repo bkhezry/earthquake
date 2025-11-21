@@ -235,7 +235,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         }
       }, 300)
     }
-    var versionName = ""
+    var versionName: String? = ""
     try {
       versionName = packageManager.getPackageInfo(packageName, 0).versionName
     } catch (e: Exception) {
@@ -304,15 +304,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
       .alpha(1.0f)
       .setDuration(200)
       .setListener(object : Animator.AnimatorListener {
-        override fun onAnimationRepeat(animator: Animator?) {
 
-        }
-
-        override fun onAnimationCancel(animator: Animator?) {
-
-        }
-
-        override fun onAnimationStart(animator: Animator?) {
+        override fun onAnimationStart(animator: Animator) {
           mMap.setPadding(
             0,
             0,
@@ -327,7 +320,15 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
           recyclerView.visibility = View.VISIBLE
         }
 
-        override fun onAnimationEnd(animator: Animator?) {
+        override fun onAnimationEnd(animator: Animator) {
+
+        }
+
+        override fun onAnimationCancel(animator: Animator) {
+
+        }
+
+        override fun onAnimationRepeat(animator: Animator) {
 
         }
 
@@ -343,19 +344,12 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
       .alpha(0.0f)
       .setDuration(200)
       .setListener(object : Animator.AnimatorListener {
-        override fun onAnimationRepeat(animator: Animator?) {
+
+        override fun onAnimationStart(animator: Animator) {
 
         }
 
-        override fun onAnimationCancel(animator: Animator?) {
-
-        }
-
-        override fun onAnimationStart(animator: Animator?) {
-
-        }
-
-        override fun onAnimationEnd(animator: Animator?) {
+        override fun onAnimationEnd(animator: Animator) {
           mMap.setPadding(
             0,
             0,
@@ -368,6 +362,14 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             AppUtil.getActionBarHeight(this@MainActivity) + AppUtil.dpToPx(20f)
           recyclerView.clearAnimation()
           recyclerView.visibility = View.GONE
+        }
+
+        override fun onAnimationCancel(animator: Animator) {
+
+        }
+
+        override fun onAnimationRepeat(animator: Animator) {
+
         }
 
       })
