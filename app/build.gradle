@@ -1,8 +1,8 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'org.jetbrains.dokka-android'
+apply plugin: 'kotlin-parcelize'
 
 def isRelease = false
 
@@ -12,11 +12,12 @@ def versionMajor = 1
 def versionMinor = 4
 def versionPatch = 4
 android {
-    compileSdkVersion 31
+    namespace 'com.github.bkhezry.earthquake'
+    compileSdkVersion 34
     defaultConfig {
         applicationId "com.github.bkhezry.earthquake"
         minSdkVersion 21
-        targetSdkVersion 31
+        targetSdkVersion 34
         versionCode versionMajor * 10000 + versionMinor * 100 + versionPatch
         versionName "${versionMajor}.${versionMinor}.${versionPatch}"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -42,14 +43,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8.toString()
-    }
-    androidExtensions {
-        experimental = true
+        jvmTarget = '17'
     }
     dokka {
         outputFormat = 'html'
